@@ -1,0 +1,834 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+<style>
+    .pd-wrap {
+	padding: 40px 0;
+	font-family: 'Poppins', sans-serif;
+}
+.heading-section {
+	text-align: center;
+	margin-bottom: 20px;
+}
+.sub-heading {
+	font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    display: block;
+    font-weight: 600;
+    color: #2e9ca1;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.heading-section h2 {
+	font-size: 32px;
+    font-weight: 500;
+    padding-top: 10px;
+    padding-bottom: 15px;
+	font-family: 'Poppins', sans-serif;
+}
+.user-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    position: relative;
+	min-width: 80px;
+	background-size: 100%;
+}
+.carousel-testimonial .item {
+	padding: 30px 10px;
+}
+.quote {
+	position: absolute;
+    top: -23px;
+    color: #2e9da1;
+    font-size: 27px;
+}
+.name {
+	margin-bottom: 0;
+    line-height: 14px;
+    font-size: 17px;
+    font-weight: 500;
+}
+.position {
+	color: #adadad;
+	font-size: 14px;
+}
+.owl-nav button {
+	position: absolute;
+	top: 50%;
+	transform: translate(0, -50%);
+	outline: none;
+	height: 25px;
+}
+.owl-nav button svg {
+	width: 25px;
+	height: 25px;
+}
+.owl-nav button.owl-prev {
+	left: 25px;
+}
+.owl-nav button.owl-next {
+	right: 25px;
+}
+.owl-nav button span {
+	font-size: 45px;
+}
+.product-thumb .item img {
+	height: 100px;
+}
+.product-name {
+	font-size: 22px;
+	font-weight: 500;
+	line-height: 22px;
+	margin-bottom: 4px;
+}
+.product-price-discount {
+	font-size: 22px;
+    font-weight: 400;
+    padding: 10px 0;
+    clear: both;
+}
+.product-price-discount span.line-through {
+	text-decoration: line-through;
+    margin-left: 10px;
+    font-size: 14px;
+    vertical-align: middle;
+    color: #a5a5a5;
+}
+.display-flex {
+	display: flex;
+}
+.align-center {
+	align-items: center;
+}
+.product-info {
+	width: 100%;
+}
+.reviews-counter {
+    font-size: 13px;
+}
+.reviews-counter span {
+	vertical-align: -2px;
+}
+.rate {
+    float: left;
+    padding: 0 10px 0 0;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float: right;
+    width: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 21px;
+    color:#ccc;
+	margin-bottom: 0;
+	line-height: 21px;
+}
+.rate:not(:checked) > label:before {
+    content: '\2605';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+.product-dtl p {
+	font-size: 14px;
+	line-height: 24px;
+	color: #7a7a7a;
+}
+.product-dtl .form-control {
+	font-size: 15px;
+}
+.product-dtl label {
+	line-height: 16px;
+	font-size: 15px;
+}
+.form-control:focus {
+	outline: none;
+	box-shadow: none;
+}
+.product-count {
+	margin-top: 15px; 
+}
+.product-count .qtyminus,
+.product-count .qtyplus {
+	width: 34px;
+    height: 34px;
+    background: #212529;
+    text-align: center;
+    font-size: 19px;
+    line-height: 36px;
+    color: #fff;
+    cursor: pointer;
+}
+.product-count .qtyminus {
+	border-radius: 3px 0 0 3px; 
+}
+.product-count .qtyplus {
+	border-radius: 0 3px 3px 0; 
+}
+.product-count .qty {
+	width: 60px;
+	text-align: center;
+}
+.round-black-btn {
+	border-radius: 4px;
+    background: #212529;
+    color: #fff;
+    padding: 7px 45px;
+    display: inline-block;
+    margin-top: 20px;
+    border: solid 2px #212529; 
+    transition: all 0.5s ease-in-out 0s;
+}
+.round-black-btn:hover,
+.round-black-btn:focus {
+	background: transparent;
+	color: #212529;
+	text-decoration: none;
+}
+
+.product-info-tabs {
+	margin-top: 25px; 
+}
+.product-info-tabs .nav-tabs {
+	border-bottom: 2px solid #d8d8d8;
+}
+.product-info-tabs .nav-tabs .nav-item {
+	margin-bottom: 0;
+}
+.product-info-tabs .nav-tabs .nav-link {
+	border: none; 
+	border-bottom: 2px solid transparent;
+	color: #323232;
+}
+.product-info-tabs .nav-tabs .nav-item .nav-link:hover {
+	border: none; 
+}
+.product-info-tabs .nav-tabs .nav-item.show .nav-link, 
+.product-info-tabs .nav-tabs .nav-link.active, 
+.product-info-tabs .nav-tabs .nav-link.active:hover {
+	border: none; 
+	border-bottom: 2px solid #d8d8d8;
+	font-weight: bold;
+}
+.product-info-tabs .tab-content .tab-pane {
+	padding: 30px 20px;
+	font-size: 15px;
+	line-height: 24px;
+	color: #7a7a7a;
+}
+.review-form .form-group {
+	clear: both;
+}
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+.review-form .rate {
+	float: none;
+	display: inline-block;
+}
+.review-heading {
+	font-size: 24px;
+    font-weight: 600;
+    line-height: 24px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    color: #000;
+}
+.review-form .form-control {
+	font-size: 14px;
+}
+.review-form input.form-control {
+	height: 40px;
+}
+.review-form textarea.form-control {
+	resize: none;
+}
+.review-form .round-black-btn {
+	text-transform: uppercase;
+	cursor: pointer;
+}
+body{
+    background-color: black;
+}
+.black-grey-to{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+}
+.lines{
+    display: flex;
+    justify-content: center;
+    gap: 5%;
+    margin-bottom: 4px;
+}
+ #Grey,#Black{
+    width: 45%;
+    padding: 1px;
+ }
+.off{
+    color: #7a7a7a;
+   
+}
+.on{
+    color: #fff;
+
+}
+.offLine {
+    background-color: #7a7a7a;
+}
+.onLine{
+    background-color: #ffff;
+}
+.togglebtn{
+    cursor: pointer;
+}
+</style>
+<style>
+    
+    .slide-cart {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            max-width: 400px;
+            background-color:rgb(5, 5, 5);
+            opacity: 1;
+
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            color: white;
+        }
+
+
+        .slide-cart {
+            right: 0;
+            transform: translateX(100%);
+        }
+
+        .slide-menu.active {
+            transform: translateX(0);
+        }
+
+        .slide-cart.active {
+            transform: translateX(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .slide-cart.active {
+            transform: translateX(0);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 12;
+        }
+        
+    
+        @media (max-width: 768px) {
+            .slide-cart{
+                width: 100%;
+            }
+        }
+        
+
+</style>
+</head>
+<body>
+    <!-- Bootstrap Navbar -->
+    <nav style="background-color: black;" class="navbar navbar-expand-lg navbar-dark  fixed-top" id="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">NoMask</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="na    vbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+          <div id="cart-btn">
+            <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span id="checkout_items" style="color: white;">(0)</span>
+          </div>
+        </div>
+    </nav>
+    <!-- Sliding Cart -->
+    <div class="slide-cart" id="cart">
+        <div style="display: flex; justify-content: space-between;align-items: center; padding: 50px;">
+            <div id="bag-header">CART</div>
+            <div class="hamburger_close" id="close-cart-button"><i class="fa fa-times" aria-hidden="true"></i></div>
+        </div>
+    
+        <hr>
+        <div id="cartBox" style="overflow-y: auto; max-height: 90vh; ">
+    
+        </div>
+    </div>
+
+
+<div class="overlay" id="overlay"></div>
+
+    <div class="pd-wrap">
+        <div class="container">
+            <div>
+                <div style="margin: 20px;">
+                    <div class="black-grey-to" style="color: white;">
+                        <span id="Blackbtn" class="on togglebtn">Black</span>
+                        <span id="Greybtn" class="off togglebtn">Grey</span>
+                    </div>
+                    <div class="lines ">
+                        <span id="Black" class="onLine"></span>
+                        <span id="Grey" class="offLine"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="slider" >
+                        <div class="item" style="">
+                            <img 
+                                src="{% static 'home/store/black.jpg' %}"  id="blackcover"  style="width: 100%;" />
+                            <img src="{% static 'home/store/grey.jpg' %}" id="greycover" style="display: none; width: 100%;"/>
+                        </div>
+                       
+                    </div>
+              
+                </div>
+                <div class="col-md-6">
+                    <div class="product-dtl">
+                        <div class="product-info">
+                            <div class="product-name" id="product_name" style="color: white; margin-top: 20px;">NoMask Black</div>
+                          
+                            <div class="product-price-discount" style="color: white;" id="product_price" data-price="200">GHS200
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="size" style="color: white;">Pieces</label>
+                                <select id="size" name="size" class="form-control" >
+                                    <option class="option">OG</option>
+                                    <option class="option">Reflector</option>
+                                </select>
+                            </div>
+                            
+                        </div>
+                        <div class="product-info-tabs">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+            <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab"
+                                        aria-controls="description" aria-selected="true">Description</a>
+                                </li>
+                               
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="description" role="tabpanel"
+                                    aria-labelledby="description-tab">
+                                    <div id="ogBlack">
+                                        this is the description for og Black
+                                    </div>
+                                    <div id="reflectorBlack" style="display: none;">
+                                        this is the Reflector black
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                
+                        <div class="product-count">
+                            <label for="size" style="color: white;">Quantity:</label>
+                            <form action="#" class="display-flex"> 
+                                <input type="text" name="product_id" id="product_id" value="39e49b03-180b-41a9-9201-abc2aac773a7" style="display: none;">
+                                <div class="qtyminus">-</div>
+                                <input type="text" name="quantity" id="quantity_value" value="1" class="qty">
+                                <div class="qtyplus">+</div>
+                            </form>
+                            <a href="#" class="round-black-btn" id="addToCartDiv">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       
+           
+        </div>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const qtyMinus = document.querySelector('.qtyminus');
+    const qtyPlus = document.querySelector('.qtyplus');
+    const qtyInput = document.querySelector('.qty');
+
+    // Increase quantity
+    qtyPlus.addEventListener('click', function () {
+        let currentValue = parseInt(qtyInput.value) || 1;
+        qtyInput.value = currentValue + 1;
+    });
+
+    // Decrease quantity but not below 1
+    qtyMinus.addEventListener('click', function () {
+        let currentValue = parseInt(qtyInput.value) || 1;
+        if (currentValue > 1) {
+            qtyInput.value = currentValue - 1;
+        }
+    });
+
+    // Optional: Prevent manual input of non-numeric values
+    qtyInput.addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value === '' || parseInt(this.value) < 1) {
+            this.value = 1;
+        }
+    });
+});
+
+</script>
+
+<script>
+    toggleButtons = document.querySelectorAll('.togglebtn')
+    greycover = document.getElementById('greycover')
+    blackcover = document.getElementById('blackcover')
+    Blackbtn = document.getElementById('Blackbtn')
+    Greybtn = document.getElementById('Greybtn')
+    BlackLine = document.getElementById('Black')
+    GreyLine =  document.getElementById('Grey')
+    description = document.getElementById('description')
+    options = document.querySelectorAll('.option')
+    product_id = document.getElementById('product_id')
+    const grey = '387400c2-2eb8-43f0-b0ef-960d4b9bc982'
+    const black = '39e49b03-180b-41a9-9201-abc2aac773a7'
+    product_name = document.getElementById('product_name') 
+
+    toggleButtons.forEach(button => {
+        button.onclick = () => {
+
+            if (button.innerHTML.trim() == 'Black'){
+                greycover.style.display = 'none'
+                blackcover.style.display = 'block'
+                Blackbtn.classList.remove('off')
+                Greybtn.classList.add('on')
+
+               Blackbtn.classList.remove('off')
+               Blackbtn.classList.add('on')
+
+               Greybtn.classList.remove('on')
+               Greybtn.classList.add('off')
+
+               BlackLine.classList.add('onLine')
+               BlackLine.classList.remove('offLine')
+
+               GreyLine.classList.add('offLine')
+               GreyLine.classList.remove('onLine')
+
+               product_id.value = black
+               product_name.innerHTML = 'NoMask Black'
+               
+                
+            }
+            if (button.innerHTML.trim() == 'Grey' ){
+                greycover.style.display = 'block'
+                blackcover.style.display = 'none'
+                Blackbtn.classList.remove('on')
+                Greybtn.classList.add('off')
+
+                
+                Greybtn.classList.add('on')
+                Greybtn.classList.remove('off')
+
+                BlackLine.classList.remove('onLine')
+                BlackLine.classList.add('offLine')
+
+                GreyLine.classList.remove('offLine')
+                GreyLine.classList.add('onLine')
+
+                product_id.value = grey
+                product_name.innerHTML = 'NoMask Grey'
+              
+            } 
+        }
+        
+    });
+
+    options.forEach(option =>{
+        option.onclick = () =>{
+            if (option.innerHTML.trim() == 'OG Black'){
+                document.getElementById('ogBlack').style.display = 'block'
+                document.getElementById('reflectorBlack').style.display = 'none'
+            }
+            else{
+                document.getElementById('reflectorBlack').style.display = 'block'
+                document.getElementById('ogBlack').style.display = 'none'
+            }
+        }
+    })
+
+</script>
+<script>
+    const cart = document.getElementById('cart')
+        const cartBtn = document.getElementById('cart-btn');
+        const overlay = document.getElementById('overlay')
+        const navbar = document.getElementById('navbar')
+
+        var closeCart = document.getElementById('close-cart-button')
+        closeCart.onclick = () => {
+            cart.classList.remove('active');
+            overlay.style.display = 'none';
+            document.body.style.overflowY = 'scroll'
+            navbar.style.display= 'flex'
+        }
+
+
+        cartBtn.addEventListener('click', () => {
+            cart.classList.add('active');
+            overlay.style.display = 'block';
+            document.body.style.overflowY = 'hidden'
+            navbar.style.display = 'none'
+        });
+
+
+        overlay.addEventListener('click', () => {
+
+            cart.classList.remove('active');
+            overlay.style.display = 'none';
+
+            document.body.style.overflowY = 'scroll'
+            navbar.style.display = 'flex'
+        });
+
+        
+            function formatPrice(price) {
+            return 'GHS' + price.toFixed(2);
+        }
+        function displayCartItems() {
+            let cartBox = document.getElementById('cartBox');  // Div to display cart items
+            cartBox.innerHTML = '';  // Clear existing content
+            checkoutBox = document.getElementById('checkoutBox')
+            let totalPrice = 0;
+
+
+
+            let cart = JSON.parse(localStorage.getItem('Nomaskcart')) || [];
+            document.getElementById('checkout_items').innerText = cart.length
+            // document.getElementById('cart-total').innerText = cart.length
+            if (cart.length > 0) {
+                cart.forEach(item => {
+                    // Create HTML for each cart item
+                    let cartItemDiv = `
+                            <div class="cart-item" style="padding: 10px; margin: 10px; display: flex; align-items: center;  position: relative;">
+                                <img src="${item.image_url}" alt="Product Image" width="100" style="border-radius: 8px; margin-right: 15px;">
+                                <div style="flex: 1; ">
+                                <div style="display:flex; gap:5px;">
+                                    <p style="margin: 0; font-weight: bold; font-size: 14px;">${item.product_name}</p>
+                                    <p style="margin: 0; font-size: 14px; "> x${item.quantity}</p>
+                                </div>
+                                <div style='display:flex; justify-content:space-between;'>
+                                <p style="margin: 0; font-size: 14px;">${item.selectedSize}</p>
+                                    <p style="margin: 0; font-size: 14px;"> GHS ${item.price}</p>
+                                </div>
+                                </div>
+                                <button class="close-button" onclick="removeFromCart('${item.product_id_date}')" style="position: absolute; top: 10px; right: 10px; background: transparent; border: none; cursor: pointer; font-size: 16px; color: #FF5722;">&times;</button>
+                            </div>
+                            `;
+
+                    cartBox.innerHTML += cartItemDiv;  // Add the cart item to the cart box
+                    totalPrice += item.price
+                });
+                cartBox.innerHTML += `
+                <div style="display: flex; justify-content: space-between; align-items: center;margin-left: 20px;" id="total-price-div" >
+                    <div>Total:</div>
+                    <div class="total-price" id="total-price" style="color: #28a745; font-weight: bold; margin-right: 20px;">${formatPrice(totalPrice)}</div>
+                </div>
+                <div style="text-align: center; margin: 20px;">
+                        <a href="#">       <button style="padding: 10px 20px; width:100%; background-color: #228B22; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Checkout
+                    </button></a>
+                </div>
+                <div style="width:100%; height:150px"></div>
+                `;
+
+            }
+            else {
+                cartBox.innerHTML = '<div class="empty-cart" style="display:flex; justify-content:center;">Nothing in Cart</div>'
+
+
+            }
+        }
+        // Add the checkout button below the last cart item
+
+        // Placeholder function for checkout action
+
+        function removeFromCart(productId) {
+            // Retrieve the current cart from localStorage
+            let cart = JSON.parse(localStorage.getItem('Nomaskcart')) || [];
+
+            // Filter out the item to be removed
+            cart = cart.filter(item => item.product_id_date !== productId);
+
+            // Save the updated cart back to localStorage
+            localStorage.setItem('Nomaskcart', JSON.stringify(cart));
+
+            // Update the display
+            displayCartItems();
+        }
+
+        // Load and display cart items when the page loads
+        window.onload = displayCartItems;
+
+</script>
+<script>
+    addToCartDivFunction = () => {
+             
+
+             // Create a unique product ID with timestamp and random number
+             const product_id_date = `${product_id}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+
+             // Get quantity from the input field
+             const quantity = Number(document.getElementById('quantity_value').value);
+             const product_price = document.getElementById('product_price')
+
+             // Select the currently selected size
+             const selectElement = document.getElementById('size');
+             var selectedSize = selectElement.value.trim();
+             product_name = document.getElementById('product_name')
+            
+            
+            if (product_name.innerHTML.includes('Grey')){
+                image_url = document.getElementById('greycover').src
+            }
+            else{
+                image_url = document.getElementById('blackcover').src
+            }
+            
+
+            
+
+
+
+
+             // If no size is selected, alert the user and exit
+             if (!selectedSize) {
+                 return alert('No size selected');
+             }
+             if (selectedSize.trim() == 'None'){
+                 selectedSize = ''
+             }
+
+             // Calculate the total price
+             const price = Number(quantity) * Number(product_price.dataset.price);
+
+         // Create the new item object to add or update in the cart
+         product_name = product_name.innerText
+         product_id = document.getElementById('product_id')
+         product_id = product_id.value.trim()
+    
+         const newItem = {
+             product_id_date,
+             product_id,  // Include original product_id to identify the product in the cart
+             product_name,
+             quantity,
+             image_url,
+             selectedSize,
+             price,
+             
+         };
+
+         // Get the cart from localStorage or initialize an empty array
+         let cart = JSON.parse(localStorage.getItem('Nomaskcart')) || [];
+
+         // Find index of the existing product in the cart by both product_id and selectedSize
+        
+         alert(selectedSize)
+         const existingIndex = cart.findIndex(item => item.product_id === product_id && item.selectedSize === selectedSize);
+      
+
+         if (existingIndex !== -1) {
+             // If the same product with the same size exists, replace it with the new item
+             cart[existingIndex] = newItem;
+             alert('Updated product in cart');
+         } else {
+             // If the product or size is new, add it to the cart
+            
+             cart.push(newItem);
+             alert('Item added to cart');
+         }
+
+         // Save the updated cart back to localStorage
+         localStorage.setItem('Nomaskcart', JSON.stringify(cart));
+
+         // Call a function to display the updated cart items
+         displayCartItems();
+};
+
+
+ addToCartDiv.onclick = addToCartDivFunction
+    
+
+</script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="	sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+   
+</html>
+                        

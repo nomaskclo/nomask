@@ -14,3 +14,5 @@ from django.core.asgi import get_asgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nomask.settings')
 
 application = get_asgi_application()
+
+app = get_wsgi_application()
