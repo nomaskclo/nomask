@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .tab {
+            width: 90%;
+            margin: 0 auto;
+            height: 15px;
+            margin-bottom: -5px;
+            background-color: #fff;
+          
+            border-radius: 50px;
+        }
+
+        .pseudo {
+            position: relative;
+        }
+
+        .pseudo:before {
+            content: "";
+            position: absolute;
+            width: 96%;
+            top: 5px;
+            left: 2%;
+            border-bottom: 1px dashed #000;
+        }
+
+        .panel-dark {
+            background-color: #f7f7f7;
+            border-color: #f7f7f7;
+           
+        }
+
+        .pseudo:after {
+            content: '';
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 10px;
+            bottom: -10px;
+            left: 0;
+            background-image: linear-gradient(45deg, rgba(0, 0, 0, 0) 33.333%, #f7f7f7 33.333%, #f7f7f7 66.667%, rgba(0, 0, 0, 0) 66.667%), linear-gradient(-45deg, rgba(0, 0, 0, 0) 33.333%, #f7f7f7 33.333%, #f7f7f7 66.667%, rgba(0, 0, 0, 0) 66.667%);
+            background-size: 20px 40px;
+            background-position: 50% -30px;
+            background-repeat: repeat-x;
+            z-index: 1;
+        }
+
+        .container-print {
+            padding: 0;
+        }
+
+        body {
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .mainReceipt {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .panel-body {
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">NoMask</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="mainReceipt d-flex flex-column align-items-center justify-content-center">
+        <div class="row w-100">
+            <div class="col-12">
+                <div class="tab"></div>
+            </div>
+        </div>
+        <div class="row w-100">
+            <div class="col-12 container-print">
+                <div class="panel panel-dark panel-default pseudo">
+                    <div class="panel-body">
+                        <div class="row" style="display: flex; justify-content: center;">
+                            <img src="{% static 'home/store/black_logo.png' %}" alt="" style="width: 120px;">
+                        </div>
+                        <div class="row">
+                            {% for item in payment.cart.cart_objects.all %}
+                                    <div class="product">
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <img src="{{item.product.image.url}}" alt="">
+                                            <p> GHS {{item.price}}</p>
+                                        </div>
+                            {% endfor %}
+                        
+                        </div>
+                        <div class="row">
+                            <div class="col-8">Total amount</div>
+                            <div class="col-4">300</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">Discount</div>
+                            <div class="col-4">100</div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-8">Payable amount</div>
+                            <div class="col-4">200</div>
+                        </div>
+                        <div class="row text-center">
+                            <button class="btn btn-success"  id="django-paystack-button" onclick="payWithPayStack()">
+                                Make Payment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://js.paystack.co/v2/inline.js"></script>
+    <script>
+        delivery_cost = Number('{{payment.delivery_price}}') * 16 * 100
+        total = Number('{{payment.amount_value}}') + delivery_cost
+        function payWithPayStack() {
+            const paystack = new PaystackPop();
+
+
+
+            paystack.newTransaction({
+
+                key: "pk_test_7525fbdf5eaabe3bf6eb951bc821b72d7d77e1d3",
+                email: "{{payment.email}}",
+                amount: `${total}`,
+
+                onSuccess: (transaction) => {
+                    localStorage.removeItem('cart')
+
+                    window.location.href = '/orderSuccess/{{payment.ref}}'
+
+                },
+
+                onCancel: () => {
+
+                    alert('Payment Canceled')
+
+                }
+
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>

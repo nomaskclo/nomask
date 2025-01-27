@@ -496,12 +496,12 @@ body{
                 
                         <div class="product-count">
                             <label for="size" style="color: white;">Quantity:</label>
-                            <form action="#" class="display-flex"> 
+                            <div action="#" class="display-flex"> 
                                 <input type="text" name="product_id" id="product_id" value="39e49b03-180b-41a9-9201-abc2aac773a7" style="display: none;">
                                 <div class="qtyminus">-</div>
                                 <input type="text" name="quantity" id="quantity_value" value="1" class="qty">
                                 <div class="qtyplus">+</div>
-                            </form>
+                            </div>
                             <a href="#" class="round-black-btn" id="addToCartDiv">Add to Cart</a>
                         </div>
                     </div>
@@ -695,7 +695,7 @@ body{
                     <div class="total-price" id="total-price" style="color: #28a745; font-weight: bold; margin-right: 20px;">${formatPrice(totalPrice)}</div>
                 </div>
                 <div style="text-align: center; margin: 20px;">
-                        <a href="#">       <button style="padding: 10px 20px; width:100%; background-color: #228B22; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        <a href="{% url 'checkout' %}">       <button style="padding: 10px 20px; width:100%; background-color: #228B22; color: white; border: none; border-radius: 5px; cursor: pointer;">
                         Checkout
                     </button></a>
                 </div>
@@ -793,7 +793,7 @@ body{
 
          // Find index of the existing product in the cart by both product_id and selectedSize
         
-         alert(selectedSize)
+         
          const existingIndex = cart.findIndex(item => item.product_id === product_id && item.selectedSize === selectedSize);
       
 
