@@ -592,6 +592,24 @@
 </body>
 <!-- Script to handle local storage and cart display -->
 <script>
+    down_arrow = document.getElementById('down-arrow')
+    cart_div = document.getElementById('cart-items-container')
+    total_price_div = document.getElementById('total-price-div')
+    down_arrow.onclick = () => {
+        if (down_arrow.src.includes('down')) {
+            down_arrow.src = '{% static "up.svg" %}'
+            cart_div.style.display = 'none'
+            total_price_div.style.display = 'none'
+
+        }
+        else if (down_arrow.src.includes('up')) {
+            down_arrow.src = '{% static "down.svg" %}'
+            cart_div.style.display = 'block'
+            total_price_div.style.display = 'flex'
+        }
+    }
+</script>
+<script>
     // Function to format the price
     function formatPrice(price) {
         return 'GHS' + price.toFixed(2);
