@@ -118,7 +118,7 @@ class Checkout(View):
     
 class Contact(View):
     def get(self,request):
-        return render(request,'home/Contact.html')
+        return render(request,'home/contact.html')
 
 class About(View):
     def get(self,request):
