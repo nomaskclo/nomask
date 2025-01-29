@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: white !important;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .orders-container {
+            margin: 0 auto;
+            max-width: 1000px;
+            padding: 20px;
+            margin-top: 80px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .tableToggle {
+            display: flex;
+            justify-content: right;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .tableToggle span {
+            border: 1px solid white;
+            padding: 5px 10px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .osb {
+            border: 1px solid white;
+            padding: 5px;
+            cursor: pointer;
+            background-color: black;
+            color: white;
+        }
+
+        .activeOrder {
+            background-color: white;
+            color: black !important;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            border: 1px solid white;
+        }
+
+        .delivered svg {
+            width: 32px;
+            height: 32px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Bootstrap Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #000;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">NoMask</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Access Requests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url  'ordersPage' %}">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact Reqeusts</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <!-- Orders Page Content -->
+    <div class="orders-container">
+        <h2>My Orders</h2>
+
+        <div style="text-align: right; margin: 10px 0;">
+            <input type="number" name="orderSearch" id="orderSearch" style="width: 100px; padding: 5px;">
+            <span class="osb" id="search">Search</span>
+            <span class="osb" id="cancel">Cancel</span>
+        </div>
+
+        <div class="tableToggle">
+            <span class="toggler activeOrder" id="all">All Orders</span>
+            <span class="toggler" id="Dev">Delivered Orders</span>
+            <span class="toggler" id="notDev">Not-Delivered Orders</span>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Order Id</th>
+                    <th>Order Count</th>
+                    <th>Date</th>
+                    <th>Delivered</th>
+                    <th>More Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr class="tr">
+                    <td class="orderId">{{ payment.order_id }}</td>
+                    <td>{{ payment.cart.cart_objects.all|length }}</td>
+                    <td>{{ payment.date_created }}</td>
+                    <td class="delivered {{ payment.delivered }}">
+                        {% if payment.delivered == False %}
+                        <svg viewBox="0 0 512 512" fill="#ff0000">
+                            <g>
+                                <polygon
+                                    points="328.96 30.2933333 298.666667 0 164.48 134.4 30.2933333 0 0 30.2933333 134.4 164.48 0 298.666667 30.2933333 328.96 164.48 194.56 298.666667 328.96 328.96 298.666667 194.56 164.48">
+                                </polygon>
+                            </g>
+                        </svg>
+                        {% else %}
+                        <svg viewBox="0 0 24 24" fill="#00a400">
+                            <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"></path>
+                        </svg>
+                        {% endif %}
+                    </td>
+                    <td><a href="#">Details</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('search').onclick = () => {
+            let orderSearch = document.getElementById('orderSearch').value;
+            let tableRows = document.querySelectorAll('.tr');
+
+            tableRows.forEach(row => {
+                let orderId = row.querySelector('.orderId').innerText;
+                row.style.display = orderId.includes(orderSearch) ? 'table-row' : 'none';
+            });
+        };
+
+        document.getElementById('cancel').onclick = () => {
+            document.querySelectorAll('.tr').forEach(row => {
+                row.style.display = 'table-row';
+            });
+        };
+
+        document.querySelectorAll('.toggler').forEach(toggle => {
+            toggle.onclick = () => {
+                document.querySelectorAll('.toggler').forEach(item => item.classList.remove('activeOrder'));
+                toggle.classList.add('activeOrder');
+
+                let tableRows = document.querySelectorAll('.tr');
+                let filterType = toggle.id;
+
+                tableRows.forEach(row => {
+                    let delivered = row.querySelector('.delivered').classList.contains('True');
+                    if (filterType === 'all') {
+                        row.style.display = 'table-row';
+                    } else if (filterType === 'Dev' && delivered) {
+                        row.style.display = 'table-row';
+                    } else if (filterType === 'notDev' && !delivered) {
+                        row.style.display = 'table-row';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            };
+        });
+    </script>
+</body>
+
+</html>

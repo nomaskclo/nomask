@@ -5,61 +5,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Contact Us</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .tab {
-            width: 90%;
-            margin: 0 auto;
-            height: 15px;
-            margin-bottom: -5px;
-            background-color: #fff;
-          
-            border-radius: 50px;
-        }
-
-        .pseudo {
-            position: relative;
-        }
-
-        .pseudo:before {
-            content: "";
-            position: absolute;
-            width: 96%;
-            top: 5px;
-            left: 2%;
-            border-bottom: 1px dashed #000;
-        }
-
-        .panel-dark {
-            background-color: #f7f7f7;
-            border-color: #f7f7f7;
-           
-        }
-
-        
-        .container-print {
-            padding: 0;
-        }
-
         body {
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-color: black;
+            color: white !important;
             margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        
         }
 
-        .mainReceipt {
+        .contact-container {
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 20px;
+            margin-top: 80px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .form-floating {
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .form-floating input,
+        .form-floating textarea {
             width: 100%;
-            max-width: 600px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
         }
 
-        .panel-body {
-            overflow: hidden;
+        .form-floating textarea {
+            resize: none;
+            height: 700px;
         }
-         footer {
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+        
+        footer {
             position: relative;
             bottom: 0;
             width: 100%;
@@ -81,116 +86,65 @@
             font-size: 24px;
             margin: 0 10px;
         }
-    
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top">
+    <!-- Bootstrap Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #000;">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">NoMask</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            <div class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-            </button>
+            </div>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
+                        <a class="nav-link" href="{% url 'about' %}" >About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"  aria-current="page">Contact</a>
+                        <a class="nav-link active" href="{% url 'contact' %}"  aria-current="page">Contact</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="mainReceipt d-flex flex-column align-items-center justify-content-center">
-        <div class="row w-100">
-            <div class="col-12">
-                <div class="tab"></div>
+
+    <!-- Contact Page Content -->
+    <div class="contact-container">
+        <h2>Contact Us</h2>
+        <form id="contact-form" method="POST">
+            {% csrf_token %}
+            <div class="form-floating">
+                <input type="text" class="form-control" id="fname" placeholder="First Name" name="fname" required>
+                <label for="fname">First Name</label>
             </div>
-        </div>
-        <div class="row w-100">
-            <div class="col-12 container-print">
-                <div class="panel panel-dark panel-default pseudo">
-                    <div class="panel-body">
-                        <div class="row" style="display: flex; justify-content: center;">
-                            <img src="{% static 'home/store/black_logo.png' %}" alt="" style="width: 120px;">
-                        </div>
-                        <div class="row">
-                            {% for item in payment.cart.cart_objects.all %}
-                                    <div class="product">
-                                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="margin: 10px; display: flex; gap: 10px; align-items: center;">    
-                                       {% if 'Black' in product.name  %}
-                                            <img src="{% static 'home/store/black.jpg' %}" alt="Product Image" style="width: 30px; height: 30px; border-radius: 5px;">
-                                       {% else %}
-                                            <img src="{% static 'home/store/grey_new.jpg' %}" alt="Product Image" style="width: 50px; height: 50px; border-radius: 5px;">
-                                       {% endif %}
-                                          <p>{{item.product.name}}</p>
-                                </div>
-                                            <p style="padding-right: 10px;"> GHS {{item.price}}</p>
-                                        </div>
-                            {% endfor %}
-                        
-                        </div>
-                        <div  style="display: flex; justify-content: space-between;">
-                            <div style="padding-left: 10px;">Delivery</div>
-                            <div style="padding-right: 10px;">{{payment.delivery_actual}}</div>
-                        </div>
-                   
-                        <hr />
-                        <div style="display: flex; justify-content: space-between;">
-                            <div style="padding-left: 10px;">Payable amount</div>
-                            <b><div style="padding-right: 10px;">{{payment.total_actual}}</div></b>
-                        </div>
-                        <div style="display: flex; justify-content: center;">
-                            <button class="btn btn-success"  id="django-paystack-button" onclick="payWithPayStack()" style="margin: 10px;">
-                                Make Payment
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="lname" placeholder="Last Name" name="lname" required>
+                <label for="lname">Last Name</label>
             </div>
-        </div>
+            <div class="form-floating">
+                <input type="email" class="form-control" id="email" placeholder="Email" name="email" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="form-floating">
+                <input type="tel" class="form-control" id="phone" placeholder="Phone Number" name="phone">
+                <label for="phone">Phone Number (optional)</label>
+            </div>
+            <div class="form-floating">
+                <textarea class="form-control" id="message" style="height: 300px;" placeholder="Your Message" name="message"
+                    required></textarea>
+                <label for="message">Your Message</label>
+            </div>
+            <button type="submit">Send Message</button>
+        </form>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://js.paystack.co/v2/inline.js"></script>
-    <script>
-        delivery_cost = Number('{{payment.delivery_price}}') * 16 * 100
-        total = Number('{{payment.amount_value}}') + delivery_cost
-        function payWithPayStack() {
-            const paystack = new PaystackPop();
-
-
-
-            paystack.newTransaction({
-
-                key: "pk_test_b861b5ffacd3f3a4039ef8952f4a13b9cdff9c2a",
-                email: "{{payment.email}}",
-                amount: `${total}`,
-
-                onSuccess: (transaction) => {
-                    localStorage.removeItem('cart')
-
-                    window.location.href = '/orderSuccess/{{payment.ref}}'
-
-                },
-
-                onCancel: () => {
-
-                    alert('Payment Canceled')
-
-                }
-
-            });
-        }
-
-    </script>
         <footer>
             <div>
                 <img src="{% static 'home/store/logo_white.png' %}" alt="NoMask Logo">

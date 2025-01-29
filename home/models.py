@@ -6,10 +6,12 @@ from django.contrib.auth.models import User
 
 
 class AccessRequest(models.Model):
+    unique_id = models.UUIDField(unique=True,editable=False,default=uuid.uuid4)
     email = models.CharField(max_length=255,null=True,blank=True)
     username = models.CharField(max_length=255,null=True,blank=True)
     password = models.CharField(max_length=255,null=True,blank=True)
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    granted = models.BooleanField(default=False)
 
 
     def __str__(self):
@@ -17,8 +19,8 @@ class AccessRequest(models.Model):
     
 class Product(models.Model):   
     name = models.CharField(max_length=255)
-    unique_id = models.CharField(max_length=255,unique=True)
-    image = models.ImageField(upload_to='productImages/',null=True,blank=True)
+    unique_id = models.CharField(max_length=255,null=True,blank=True)
+    imageUrl = models.CharField(max_length=255,null=True,blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
     discount_price = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True,null=True)

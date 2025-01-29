@@ -2,6 +2,8 @@ import ast
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import AccessRequest, Product,Cart, CartObject, Payment
+from django.contrib.auth import login, logout, authenticate
+
 
 
 # Create your views here.
@@ -19,8 +21,33 @@ class Home(View):
 
             accessRequest.save()
             print('saved')
+            
 
             return redirect('/')
+
+        if 'Access' in request.POST:
+            password = request.POST.get('password')
+
+            try:
+                accessRequest = AccessRequest.objects.get(password=password)
+            except AccessRequest.DoesNotExist:
+                print('Invalid Password.')
+                accessRequest = None
+            
+            if accessRequest:
+                user = authenticate(request, username=accessRequest.username, password=password)
+                if user is not None:
+                    # Log the user in
+                    login(request, user)
+                    return redirect('/store/')  # Redirect to a home page or another page
+                else:
+                    print("Invalid username or password")
+                    return redirect('/')
+            else:
+                return redirect('/')
+
+            
+
 class Store(View):
 
     def get(self,request):
@@ -89,3 +116,20 @@ class Checkout(View):
             return redirect(f'/makePayment/{payment.ref}/')
         
     
+class Contact(View):
+    def get(self,request):
+        return render(request,'home/Contact.html')
+
+class About(View):
+    def get(self,request):
+        return render(request,'home/about.html')
+    
+class OrderSuccess(View):
+    def get(self,request,ref):
+        payment = Payment.objects.get(ref=ref)
+        payment.verified =True
+        payment.save()
+        context={
+            'payment':payment,
+        }
+        return render(request,'home/orderSuccess.html',context)

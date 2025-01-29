@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
+    'userAdmin',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +126,17 @@ STATIC_ROOT = 'productionFiles'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# The Email settings go here
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Replace with your SMTP server
+EMAIL_PORT = 465  # Use 465 for SSL or 587 for TLS
+EMAIL_USE_SSL = True
+EMAIL_USE_TSL = False
+EMAIL_HOST_USER = 'nomaskmob@gmail.com'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'uvbr eqxq owvi pwtd'  # Replace with your email password
+DEFAULT_FROM_EMAIL = 'NoMask'
+ACCOUNT_RATE_LIMITS = False
+
