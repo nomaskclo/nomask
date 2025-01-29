@@ -646,7 +646,7 @@
                         <div class="cart-item-name" style="color:white !important">${item.product_name} x${item.quantity}</div>
                         <div class="cart-item-price" style="color:white !important">${item.selectedSize}</div>
                     </div>
-                    <div class="cart-item-price">${formatPrice(item.price)}</div>
+                    <div class="cart-item-price" style="color:white !important">${formatPrice(item.price)}</div>
                 `;
             cartContainer.appendChild(cartItem);
             totalPrice += item.price;
