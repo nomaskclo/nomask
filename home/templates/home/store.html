@@ -404,7 +404,7 @@ body{
 </head>
 <body>
     <!-- Bootstrap Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark  fixed-top" style="background-color: #000;">
+        <nav class="navbar navbar-expand-lg navbar-dark  fixed-top" style="background-color: #000;" id="navbarbar">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">NoMask</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -493,8 +493,14 @@ body{
                         </div>
                         <div class="row">
                             <div class="col-md-6">
+                                <div style="display: flex; gap: 5px ;color:white; align-items: center; ">
+                                    <div style="background-color: rgba(255, 0, 0, 0.541); width:15px; height: 15px; border-radius: 50%;"></div>
+                                    <div>
+                                        Options Available Change Sizes and Color.
+                                    </div>
+                                </div>
                                 <label for="size" style="color: white;">Pieces</label>
-                                <select id="size" name="size" class="form-control" onchange="handleSizeChange(this)">
+                                <select id="size" name="size" class="form-control" >
                                     <option class="option" value="OG">OG</option>
                                     <option class="option" value="Reflector">Reflector</option>
                                 </select>
@@ -512,10 +518,10 @@ body{
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="description" role="tabpanel"
                                     aria-labelledby="description-tab">
-                                    <div id="ogBlack">
+                                    <div id="ogBlack" style="color: white;">
                                         this is the description for og 
                                     </div>
-                                    <div id="reflectorBlack" style="display: none;">
+                                    <div id="reflectorBlack" style="display: none; color: white;">
                                         this is the Reflector 
                                     </div>
                                 </div>
@@ -523,7 +529,7 @@ body{
                             </div>
                         </div>
                 
-                        <div class="product-count">
+                        <div class="product-count" id="productCount">
                             <label for="size" style="color: white;">Quantity:</label>
                             <div action="#" class="display-flex"> 
                                 <input type="text" name="product_id" id="product_id" value="39e49b03-180b-41a9-9201-abc2aac773a7" style="display: none;">
@@ -532,6 +538,9 @@ body{
                                 <div class="qtyplus">+</div>
                             </div>
                             <a href="#" class="round-black-btn" id="addToCartDiv">Add to Cart</a>
+                        </div>
+                        <div id="soldOut" style="display: none;">
+                            <img src="{% static 'soldout.png' %}" alt="Sold Out" style="width: 130px;">
                         </div>
                     </div>
                 </div>
@@ -618,11 +627,15 @@ body{
             this.value = 1;
         }
     });
+    
 });
 
 </script>
 
+
 <script>
+    productCount = document.getElementById('productCount')
+    soldOut = document.getElementById('soldOut')
     toggleButtons = document.querySelectorAll('.togglebtn')
     greycover = document.getElementById('greycover')
     blackcover = document.getElementById('blackcover')
@@ -636,73 +649,82 @@ body{
     const grey = '387400c2-2eb8-43f0-b0ef-960d4b9bc982'
     const black = '39e49b03-180b-41a9-9201-abc2aac773a7'
     product_name = document.getElementById('product_name') 
+    ogGreyStock = Number('{{nomaskGrey.ogStock}}')
+    reflectorGreyStock = Number('{{nomaskGrey.reflectorStock}}')
+    ogBlackStock = Number('{{nomaskBlack.ogStock}}')
+    reflectorBlackStock = Number('{{nomaskBlack.reflectorStock}}')
 
-    toggleButtons.forEach(button => {
-        button.onclick = () => {
+    document.addEventListener('DOMContentLoaded', function () {
+        function updateStockView() {
+            let selectedSize = document.getElementById('size').value.trim();
+            let on_element = document.querySelector('.on').innerHTML.trim();
 
-            if (button.innerHTML.trim() == 'Black'){
-                greycover.style.display = 'none'
-                blackcover.style.display = 'block'
-                Blackbtn.classList.remove('off')
-                Greybtn.classList.add('on')
-
-               Blackbtn.classList.remove('off')
-               Blackbtn.classList.add('on')
-
-               Greybtn.classList.remove('on')
-               Greybtn.classList.add('off')
-
-               BlackLine.classList.add('onLine')
-               BlackLine.classList.remove('offLine')
-
-               GreyLine.classList.add('offLine')
-               GreyLine.classList.remove('onLine')
-
-               product_id.value = black
-               product_name.innerHTML = 'NoMask Black'
-               
-                
-            }
-            if (button.innerHTML.trim() == 'Grey' ){
-                greycover.style.display = 'block'
-                blackcover.style.display = 'none'
-                Blackbtn.classList.remove('on')
-                Greybtn.classList.add('off')
-
-                
-                Greybtn.classList.add('on')
-                Greybtn.classList.remove('off')
-
-                BlackLine.classList.remove('onLine')
-                BlackLine.classList.add('offLine')
-
-                GreyLine.classList.remove('offLine')
-                GreyLine.classList.add('onLine')
-
-                product_id.value = grey
-                product_name.innerHTML = 'NoMask Grey'
-              
-            } 
-        }
-        
-    });
-
-       function handleSizeChange(selectElement) {
-            if (selectElement.value === 'OG') {
+            if (selectedSize === 'OG') {
                 document.getElementById('ogBlack').style.display = 'block';
                 document.getElementById('reflectorBlack').style.display = 'none';
+
+                if ((on_element === 'Black' && ogBlackStock === 0) || (on_element === 'Grey' && ogGreyStock === 0)) {
+                    productCount.style.display = 'none';
+                    soldOut.style.display = 'block';
+                } else {
+                    productCount.style.display = 'block';
+                    soldOut.style.display = 'none';
+                }
             } else {
                 document.getElementById('reflectorBlack').style.display = 'block';
                 document.getElementById('ogBlack').style.display = 'none';
+
+                if ((on_element === 'Black' && reflectorBlackStock === 0) || (on_element === 'Grey' && reflectorGreyStock === 0)) {
+                    productCount.style.display = 'none';
+                    soldOut.style.display = 'block';
+                } else {
+                    productCount.style.display = 'block';
+                    soldOut.style.display = 'none';
+                }
             }
         }
+
+        function handleSizeChange() {
+            updateStockView();
+        }
+
+        toggleButtons.forEach(button => {
+            button.onclick = () => {
+                let isBlack = button.innerHTML.trim() === 'Black';
+
+                greycover.style.display = isBlack ? 'none' : 'block';
+                blackcover.style.display = isBlack ? 'block' : 'none';
+
+                Blackbtn.classList.toggle('on', isBlack);
+                Blackbtn.classList.toggle('off', !isBlack);
+                Greybtn.classList.toggle('on', !isBlack);
+                Greybtn.classList.toggle('off', isBlack);
+
+                BlackLine.classList.toggle('onLine', isBlack);
+                BlackLine.classList.toggle('offLine', !isBlack);
+                GreyLine.classList.toggle('onLine', !isBlack);
+                GreyLine.classList.toggle('offLine', isBlack);
+
+                product_id.value = isBlack ? black : grey;
+                product_name.innerHTML = isBlack ? 'NoMask Black' : 'NoMask Grey';
+
+                updateStockView();
+            };
+        });
+
+        // Ensure the correct stock view is applied on page load
+        updateStockView();
+
+        // Apply the correct stock view when switching between Black and Grey
+        document.getElementById('size').addEventListener('change', handleSizeChange);
+    });
 
 </script>
 <script>
     const cart = document.getElementById('cart')
         const cartBtn = document.getElementById('cart-btn');
         const overlay = document.getElementById('overlay')
-        const navbar = document.getElementById('navbar')
+        const navbar = document.getElementById('navbarbar')
 
         var closeCart = document.getElementById('close-cart-button')
         closeCart.onclick = () => {

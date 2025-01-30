@@ -86,7 +86,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color:#000;">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">NoMask</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -134,7 +134,14 @@
                                        {% else %}
                                             <img src="{% static 'home/store/grey_new.jpg' %}" alt="Product Image" style="width: 50px; height: 50px; border-radius: 5px;">
                                        {% endif %}
-                                          <p>{{item.product.name}}</p>
+                                         <div style="display: flex; flex-direction: column; gap: 3px;">
+                                            <span>{{item.product.name}}</span>
+                                            <div style="display: flex; gap: 4px;">
+                                                <span>x{{item.quantity}} </span>
+                                                <span>{{item.size}}</span>
+                                            </div>
+                                         </div>
+
                                 </div>
                                             <p style="padding-right: 10px;"> GHS {{item.price}}</p>
                                         </div>

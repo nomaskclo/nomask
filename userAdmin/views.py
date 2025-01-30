@@ -3,24 +3,38 @@ import string
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
-from home.models import AccessRequest, Payment, DeliveryPriceByRegion
+from home.models import AccessRequest, Payment, DeliveryPriceByRegion, Product
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from .forms import DeliveryPriceForm
+from .forms import DeliveryPriceForm, AccessibleForm
+from .models import Accessible
 # Create your views here.
 
 
 class UserAdmin(View):
     
     def get(self,request):
+        if request.user.is_authenticated and request.user.is_superuser:
+            pass  # Allow access
+        else:
+            return redirect('/')
+        accessible = Accessible.objects.all()[0]
         accessRequests = AccessRequest.objects.all()
         deliveryPrices = DeliveryPriceByRegion.objects.get(name='standard')
         deliveryPricesForm = DeliveryPriceForm(instance=deliveryPrices)
+        
+        nomaskGrey = Product.objects.get(name='NoMask Grey')
+        nomaskBlack = Product.objects.get(name='NoMask Black')
+        accessibleForm = AccessibleForm(instance=accessible)
+
         context ={
             'accessRequests':accessRequests,
             'deliveryPricesForm': deliveryPricesForm,
+            'nomaskGrey':nomaskGrey,
+            'nomaskBlack':nomaskBlack,
+            'accessibleForm':accessibleForm,
         }
         return render(request,'userAdmin/userAdmin.html',context)
     
@@ -31,6 +45,35 @@ class UserAdmin(View):
             if form.is_valid():
                 form.save()
                 return redirect('/userAdmin/')
+            
+        if 'updateStock' in request.POST:
+            nomaskGrey = Product.objects.get(name='NoMask Grey')
+            nomaskBlack = Product.objects.get(name='NoMask Black')
+
+            ogGreyStock = request.POST.get('ogGreyStock')
+            reflectorGreyStock = request.POST.get('reflectorGreyStock')
+            ogBlackStock = request.POST.get('ogBlackStock')
+            reflectorBlackStock = request.POST.get('reflectorBlackStock')
+
+            if nomaskGrey.ogStock != int(ogGreyStock):
+                nomaskGrey.ogStock = ogGreyStock
+                nomaskGrey.save()
+            
+            if nomaskGrey.reflectorStock != int(reflectorGreyStock):
+                nomaskGrey.reflectorStock = reflectorGreyStock
+                nomaskGrey.save()
+
+            if nomaskBlack.ogStock != int(ogBlackStock):
+                nomaskBlack.ogStock = ogBlackStock
+                nomaskBlack.save()
+            
+            print(reflectorBlackStock)
+            if nomaskBlack.reflectorStock != int(reflectorBlackStock):
+                nomaskBlack.reflectorStock = reflectorBlackStock
+                nomaskBlack.save()
+
+
+            return redirect('/userAdmin/')
 
 
         if  'grantAccess' in request.POST:
@@ -112,6 +155,7 @@ class UserAdmin(View):
 
 class ManagementLogin(View):
     def get(self, request):
+   
         return render(request, 'userAdmin/managementLogin.html')
 
     def post(self, request):
@@ -136,6 +180,10 @@ class ManagementLogin(View):
 class OrdersPage(View):
 
     def get(self,request):
+        if request.user.is_authenticated and request.user.is_superuser:
+            pass  # Allow access
+        else:
+            return redirect('/')
         payments = Payment.objects.all().filter(verified=True)
         context ={
             'payments':payments,

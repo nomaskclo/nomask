@@ -26,7 +26,9 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,null=True)
     updated_at = models.DateTimeField(auto_now=True,null=True)
     is_active = models.BooleanField(default=True)
-    stock = models.PositiveIntegerField(default=0)
+    ogStock = models.PositiveIntegerField(default=0)
+    reflectorStock = models.PositiveIntegerField(default=0)
+    
     
     
 
@@ -60,7 +62,8 @@ class Payment(models.Model):
     additional_info = models.TextField(blank=True)
 
     # cart and payment
-    amount = models.PositiveIntegerField(blank=True)
+    amount = models.FloatField(blank=True, null=True)
+
     ref = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
    
     verified = models.BooleanField(default=False)

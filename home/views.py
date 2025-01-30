@@ -5,6 +5,7 @@ from .models import AccessRequest, Product,Cart, CartObject, Payment
 from home.models import DeliveryPriceByRegion
 from django.contrib.auth import login, logout, authenticate
 from .deliveryRatesGen import generate_shipping_cost
+from userAdmin.models import Accessible
 
 
 
@@ -13,6 +14,8 @@ from .deliveryRatesGen import generate_shipping_cost
 class Home(View):
     
     def get(self,request):
+        if request.user.is_authenticated:
+            return redirect('/store/')
         return render(request,'home/homePage.html')
     
     def post(self,request):
@@ -53,10 +56,30 @@ class Home(View):
 class Store(View):
 
     def get(self,request):
-        return render(request,'home/store.html')
+        accessible = Accessible.objects.all()[0]
+        if accessible.access == True:
+            if request.user.is_authenticated:
+                pass
+            else:
+                return redirect('/')
+        nomaskGrey = Product.objects.get(name='NoMask Grey')
+        nomaskBlack = Product.objects.get(name='NoMask Black')
+
+
+        context ={
+            'nomaskGrey':nomaskGrey,
+            'nomaskBlack':nomaskBlack,
+        }
+        return render(request,'home/store.html',context)
     
 class MakePayment(View):
     def get(self,request,ref):
+        accessible = Accessible.objects.all()[0]
+        if accessible.access == True:
+            if request.user.is_authenticated:
+                pass
+            else:
+                return redirect('/')
         payment = Payment.objects.get(ref=ref)
         ship_to = True
 
@@ -94,6 +117,12 @@ class MakePayment(View):
 class Checkout(View):
     
     def get(self,request):
+        accessible = Accessible.objects.all()[0]
+        if accessible.access == True:
+            if request.user.is_authenticated:
+                pass
+            else:
+                return redirect('/')
         return render(request,'home/checkout.html') 
     
     def post(self,request):
@@ -139,6 +168,7 @@ class Checkout(View):
                 print(obj['product_id'])
                 product = Product.objects.get(unique_id=obj['product_id'])
                 cartObj = CartObject(cart=cart[0],product=product,size=obj['selectedSize'],quantity=obj['quantity'])
+                
                 cartObj.save()
 
 
@@ -154,8 +184,19 @@ class About(View):
         return render(request,'home/about.html')
     
 class OrderSuccess(View):
+    
     def get(self,request,ref):
+        accessible = Accessible.objects.all()[0]
+        if accessible.access == True:
+            if request.user.is_authenticated:
+                pass
+            else:
+                return redirect('/')
         payment = Payment.objects.get(ref=ref)
+        if not payment.verified:
+            for item in payment.cart.cart_objects.all():
+                pass
+                
         payment.verified =True
         payment.save()
         context={
