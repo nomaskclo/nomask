@@ -42,6 +42,14 @@ class UserAdmin(View):
         nomaskGrey = Product.objects.get(name='NoMask Grey')
         nomaskBlack = Product.objects.get(name='NoMask Black')
         deliveryPrices = DeliveryPriceByRegion.objects.get(name='standard')
+
+        if 'updateAccess' in request.POST:
+            accessible = Accessible.objects.all()[0]
+            form = AccessibleForm(request.POST,instance=accessible)
+            if form.is_valid():
+                form.save()
+                return redirect('/userAdmin/')
+
         if 'updatePrices':
             form = DeliveryPriceForm(request.POST,instance=deliveryPrices)
             if form.is_valid():
@@ -206,4 +214,18 @@ class OrdersPage(View):
             'payments':payments,
         }
         return render(request,'userAdmin/ordersPage.html',context)
+    
+
+class OrdersDetailsPage(View):
+    
+    def get(self,request,unique_id):
+        if request.user.is_authenticated and request.user.is_superuser:
+            pass  # Allow access
+        else:
+            return redirect('/')
+        payment = Payment.objects.get(unique_id=unique_id)
+        context ={
+            'payment':payment,
+        }
+        return render(request,'userAdmin/ordersDetails.html',context)
     
