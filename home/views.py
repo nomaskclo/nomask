@@ -2,7 +2,9 @@ import ast
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import AccessRequest, Product,Cart, CartObject, Payment
+from home.models import DeliveryPriceByRegion
 from django.contrib.auth import login, logout, authenticate
+from .deliveryRatesGen import generate_shipping_cost
 
 
 
@@ -56,6 +58,33 @@ class Store(View):
 class MakePayment(View):
     def get(self,request,ref):
         payment = Payment.objects.get(ref=ref)
+        ship_to = True
+
+        if payment.destination_country != 'Ghana':
+            items = {
+               
+                'hoodie':0,
+               
+            }
+            for item in payment.cart.cart_objects.all():
+                items['hoodie'] += item.quantity
+            delivery_cost = generate_shipping_cost(items,payment.destination_country)
+            print(delivery_cost)
+            if 'N/A' in str(delivery_cost):
+                delivery_cost = 0
+                ship_to = False #
+            else:
+                payment.delivery_price = round(delivery_cost,2)
+                payment.save()
+
+            print(items,delivery_cost)
+        else:
+            delivery_price_object = DeliveryPriceByRegion.objects.all()[0]
+            delivery_cost = getattr(delivery_price_object,payment.state.lower())
+            payment.delivery_price =  delivery_cost/16
+            payment.save()
+            
+        
         return render(request,'home/makePayment.html',{'payment':payment})
     
     def post(self,request,ref):

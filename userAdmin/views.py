@@ -3,11 +3,12 @@ import string
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
-from home.models import AccessRequest, Payment
+from home.models import AccessRequest, Payment, DeliveryPriceByRegion
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from .forms import DeliveryPriceForm
 # Create your views here.
 
 
@@ -15,12 +16,23 @@ class UserAdmin(View):
     
     def get(self,request):
         accessRequests = AccessRequest.objects.all()
+        deliveryPrices = DeliveryPriceByRegion.objects.get(name='standard')
+        deliveryPricesForm = DeliveryPriceForm(instance=deliveryPrices)
         context ={
             'accessRequests':accessRequests,
+            'deliveryPricesForm': deliveryPricesForm,
         }
         return render(request,'userAdmin/userAdmin.html',context)
     
     def post(self,request):
+        deliveryPrices = DeliveryPriceByRegion.objects.get(name='standard')
+        if 'updatePrices':
+            form = DeliveryPriceForm(request.POST,instance=deliveryPrices)
+            if form.is_valid():
+                form.save()
+                return redirect('/userAdmin/')
+
+
         if  'grantAccess' in request.POST:
             accessRequest = AccessRequest.objects.get(unique_id=request.POST.get('unique_id'))
 

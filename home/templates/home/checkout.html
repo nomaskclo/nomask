@@ -6,6 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body{
@@ -40,7 +43,9 @@
 
             
         }
-
+        #phone{
+            padding-left: 50px;
+        }
         /* Right column for cart items */
         .cart-items {
             flex: 1;
@@ -222,7 +227,7 @@
                     required>
                 <label for="floatingInput">Email address</label>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-3" style="z-index: 10 !important;">
                 <input id="phone" type="tel" name="phone" style="min-width: 100%;" required />
             </div>
 
@@ -247,10 +252,7 @@
                 <label for="city">City:</label>
             </div>
 
-            <div class="form-floating mb-3">
-                <input class="form-control" type="text" id="state" name="state">
-                <label for="state">State/Province/Region:</label>
-            </div>
+                
 
             <div class="form-floating mb-3">
                 <input class="form-control" type="text" id="zip" name="zip" required>
@@ -344,7 +346,7 @@
                     <option value="Gambia">Gambia</option>
                     <option value="Georgia">Georgia</option>
                     <option value="Germany">Germany</option>
-                    <option value="Ghana">Ghana</option>
+                    <option value="Ghana" selected>Ghana</option>
                     <option value="Gibraltar">Gibraltar</option>
                     <option value="Greece">Greece</option>
                     <option value="Greenland">Greenland</option>
@@ -515,6 +517,27 @@
                 </select>
 
             </div>
+            <div class="form-floating mb-3" id="regionDiv">
+                <select name="state" id="region"
+                    style="padding: 10px; margin: 0; padding: 0; width: 50%; background-color: white; border: 1px solid #dddddd;margin-bottom: 10px; color:#6e7073; border-radius: 5px;"
+                    required>
+                    <option value="ashanti">Ashanti Region</option>
+                    <option value="greater_accra">Greater Accra Region</option>
+                    <option value="volta">Volta Region</option>
+                    <option value="western">Western Region</option>
+                    <option value="eastern">Eastern Region</option>
+                    <option value="northern">Northern Region</option>
+                    <option value="upper_east">Upper East Region</option>
+                    <option value="upper_west">Upper West Region</option>
+                    <option value="bono">Bono Region</option>
+                    <option value="bono_east">Bono East Region</option>
+                    <option value="ahafo">Ahafo Region</option>
+                    <option value="savannah">Savannah Region</option>
+                    <option value="western_north">Western North Region</option>
+                    <option value="oti">Oti Region</option>
+                    <option value="central">Central Region</option>
+                </select>
+            </div>
             <div class="form-floating" style="color: #6e7073;">
                 <textarea class="form-control" style="height: 140px;" placeholder="Any Specific delivery instructions."
                     id="deliveryInfo" name="deliveryInfo"></textarea>
@@ -590,6 +613,57 @@
         </div>
     </footer>
 </body>
+<script>
+        //code for phone
+            const phoneInputField = document.getElementById("phone");
+            const phoneInput = window.intlTelInput(phoneInputField, {
+                utilsScript:
+                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            });
+
+</script>
+<script>
+    // Get the select element for the destination country
+        const countrySelect = document.getElementById('destination-country');
+
+        // Add an event listener for the 'change' event on the country select element
+        countrySelect.addEventListener('change', () => {
+            const selectedCountry = countrySelect.value; // Get the selected value
+            const regionDiv = document.getElementById('regionDiv'); // Region container
+
+            // If the selected country is Ghana, show the regions dropdown
+            if (selectedCountry === 'Ghana') {
+                regionDiv.innerHTML = `
+            <select name="state" id="region" 
+                style="padding: 10px; margin: 0; padding: 0; width: 50%; background-color: white; border: 1px solid #dddddd;margin-bottom: 10px; color:#6e7073; border-radius: 5px;" required>
+             
+                <option value="ashanti">Ashanti Region</option>
+                <option value="greater_accra" id="GAR" >Greater Accra Region</option>
+                <option value="volta">Volta Region</option>
+                <option value="western">Western Region</option>
+                <option value="eastern">Eastern Region</option>
+                <option value="northern">Northern Region</option>
+                <option value="upper_east">Upper East Region</option>
+                <option value="upper_west">Upper West Region</option>
+                <option value="bono">Bono Region</option>
+                <option value="bono_east">Bono East Region</option>
+                <option value="ahafo">Ahafo Region</option>
+                <option value="savannah">Savannah Region</option>
+                <option value="western_north">Western North Region</option>
+                <option value="oti">Oti Region</option>
+                <option value="central">Central Region</option>
+            </select>
+            <div id="greaterAccraDiv" style="margin-top: 10px;"></div>
+        `;}
+        else {
+                // If a different country is selected, reset the region div
+                regionDiv.innerHTML = `
+            <input class="form-control" type="text" name="state">
+            <label for="state">State/Province/Region:</label>
+        `;
+            }
+    })
+</script>
 <!-- Script to handle local storage and cart display -->
 <script>
     down_arrow = document.getElementById('down-arrow')
