@@ -78,25 +78,25 @@ WSGI_APPLICATION = 'nomask.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "neondb",
-        'URL_NO_SSL':"postgres://neondb_owner:npg_8N4OYMhVUlAi@ep-snowy-salad-a5wmr9q2-pooler.us-east-2.aws.neon.tech/neondb",
-        "URL":"postgres://neondb_owner:npg_8N4OYMhVUlAi@ep-snowy-salad-a5wmr9q2-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require",
-        "PRISMA_URL":"postgres://neondb_owner:npg_8N4OYMhVUlAi@ep-snowy-salad-a5wmr9q2-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&pgbouncer=true&connect_timeout=15",
-        "URL_NON_POOLING":"postgresql://neondb_owner:npg_8N4OYMhVUlAi@ep-snowy-salad-a5wmr9q2.us-east-2.aws.neon.tech/neondb?sslmode=require",
-        'USER': "neondb_owner",
-        'PASSWORD':"npg_8N4OYMhVUlAi",
-        "HOST":"ep-snowy-salad-a5wmr9q2.us-east-2.aws.neon.tech",
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': "neondb",
+#         'URL_NO_SSL':"postgres://neondb_owner:npg_8N4OYMhVUlAi@ep-snowy-salad-a5wmr9q2-pooler.us-east-2.aws.neon.tech/neondb",
+#         "URL":"postgres://neondb_owner:npg_8N4OYMhVUlAi@ep-snowy-salad-a5wmr9q2-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require",
+#         "PRISMA_URL":"postgres://neondb_owner:npg_8N4OYMhVUlAi@ep-snowy-salad-a5wmr9q2-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&pgbouncer=true&connect_timeout=15",
+#         "URL_NON_POOLING":"postgresql://neondb_owner:npg_8N4OYMhVUlAi@ep-snowy-salad-a5wmr9q2.us-east-2.aws.neon.tech/neondb?sslmode=require",
+#         'USER': "neondb_owner",
+#         'PASSWORD':"npg_8N4OYMhVUlAi",
+#         "HOST":"ep-snowy-salad-a5wmr9q2.us-east-2.aws.neon.tech",
+#     }
+# }
 
 
 
