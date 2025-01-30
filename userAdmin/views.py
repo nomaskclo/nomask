@@ -39,16 +39,33 @@ class UserAdmin(View):
         return render(request,'userAdmin/userAdmin.html',context)
     
     def post(self,request):
+        nomaskGrey = Product.objects.get(name='NoMask Grey')
+        nomaskBlack = Product.objects.get(name='NoMask Black')
         deliveryPrices = DeliveryPriceByRegion.objects.get(name='standard')
         if 'updatePrices':
             form = DeliveryPriceForm(request.POST,instance=deliveryPrices)
             if form.is_valid():
                 form.save()
                 return redirect('/userAdmin/')
-            
+        
+        if 'updateProductPrice' in  request.POST:
+            currentProductPrice = int(request.POST.get('newProductPrice'))
+            nomaskBlack.price = currentProductPrice
+            nomaskBlack.save()
+            nomaskGrey.price = currentProductPrice
+            nomaskGrey.save()
+            return redirect('/userAdmin/')
+        
+        if 'applyDiscount' in request.POST:
+            discount = int(request.POST.get('discount_from'))
+            nomaskBlack.discount_price = discount
+            nomaskBlack.save()
+            nomaskGrey.discount_price = discount
+            nomaskGrey.save()
+            return redirect('/userAdmin/')
+
         if 'updateStock' in request.POST:
-            nomaskGrey = Product.objects.get(name='NoMask Grey')
-            nomaskBlack = Product.objects.get(name='NoMask Black')
+            
 
             ogGreyStock = request.POST.get('ogGreyStock')
             reflectorGreyStock = request.POST.get('reflectorGreyStock')

@@ -474,7 +474,15 @@ body{
             <div class="row">
                 <div class="col-md-6">
                     <div id="slider" >
+
                         <div class="item" style="">
+                            {% if nomaskBlack.discount_price != 0 %}
+                            <span style="background-color: #c03d3d; color: white; font-weight: bold; padding: 5px 10px; 
+                                             border-radius: 5px; font-size: 14px; position: relative; top: -5px;left: 447px;">
+                               
+                               -{{nomaskBlack.discount_percentage}}% off
+                            </span>
+                            {% endif %}
                             <img 
                                 src="{% static 'home/store/black.jpg' %}"  id="blackcover"  style="width: 100%;" />
                             <img src="{% static 'home/store/grey_new.jpg' %}" id="greycover" style="display: none; width: 100%;"/>
@@ -488,7 +496,15 @@ body{
                         <div class="product-info">
                             <div class="product-name" id="product_name" style="color: white; margin-top: 20px;">NoMask Black</div>
                           
-                            <div class="product-price-discount" style="color: white;" id="product_price" data-price="200">GHS200
+                            <div>
+                                {% if nomaskBlack.discount_price != 0 %}
+                                <div class="product-price-discount" style="text-decoration: line-through; color: #c03d3d;">
+                                    GHS{{nomaskBlack.discount_price}}
+                                </div>
+                                {% endif %}
+                                <div class="product-price-discount" style="color: white;" id="product_price" data-price="{{nomaskBlack.price}}">
+                                    GHS{{nomaskBlack.price}}
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -601,21 +617,22 @@ body{
         </footer>
 </body>
 <script>
+    function getStockForSelectedOption() {
+        let selectedSize = document.getElementById('size').value.trim();
+        let on_element = document.querySelector('.on').innerHTML.trim();
+
+        if (selectedSize === 'OG') {
+            return on_element === 'Black' ? ogBlackStock : ogGreyStock;
+        } else {
+            return on_element === 'Black' ? reflectorBlackStock : reflectorGreyStock;
+        }
+    }
     document.addEventListener('DOMContentLoaded', function () {
             const qtyMinus = document.querySelector('.qtyminus');
             const qtyPlus = document.querySelector('.qtyplus');
             const qtyInput = document.querySelector('.qty');
 
-            function getStockForSelectedOption() {
-                let selectedSize = document.getElementById('size').value.trim();
-                let on_element = document.querySelector('.on').innerHTML.trim();
-
-                if (selectedSize === 'OG') {
-                    return on_element === 'Black' ? ogBlackStock : ogGreyStock;
-                } else {
-                    return on_element === 'Black' ? reflectorBlackStock : reflectorGreyStock;
-                }
-            }
+       
 
             // Increase quantity (but not beyond available stock)
             qtyPlus.addEventListener('click', function () {

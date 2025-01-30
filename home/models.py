@@ -29,6 +29,16 @@ class Product(models.Model):
     ogStock = models.PositiveIntegerField(default=0)
     reflectorStock = models.PositiveIntegerField(default=0)
     
+    @property
+    def discount_percentage(self):
+        """
+        Calculates the discount percentage based on old price (discount_price) and new price.
+        Returns the discount percentage as an integer (rounded).
+        """
+        if self.discount_price and self.price and self.discount_price > self.price:
+            discount = ((self.discount_price - self.price) / self.discount_price) * 100
+            return round(discount)  # Returns an integer discount percentage
+        return 0  # Return 0 if no discount applies
     
     
 

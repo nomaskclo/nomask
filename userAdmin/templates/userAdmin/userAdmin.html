@@ -113,6 +113,26 @@
                 <button type="submit" class="btn btn-primary mt-2" name="updateAccess">Update Access</button>
             </form>
         </div>
+        <div class="card">
+        <form method="POST">
+            {% csrf_token %}
+            <h2 class="text-center">Update Pricing</h2>
+            Current: GHS{{nomaskGrey.price}}
+            <input type="number" class="form-control" name="newProductPrice" value="{{nomaskBlack.price}}">
+            <button type="submit" value="Update Price" name="updateProductPrice" class="btn btn-warning mt-3">Update
+                Pricing</button>
+        </form>
+        </div>
+        < class="card">
+            <h2 class="text-center">Apply Discount</h2>
+            <small>Set to 0 to remove discount</small>
+            <form method="POST">
+                {% csrf_token %}
+            <input type="number" class="form-control" name="discount_from" value="{{nomaskBlack.discount_price}}">
+            <button type="submit" class="btn btn-success mt-3" name="applyDiscount">Apply Discount</button>
+        
+        </div>
+
 
         <div class="card">
             <h2 class="text-center">Update Stock</h2>
@@ -145,6 +165,8 @@
                 <button type="submit" class="btn btn-warning mt-3" name="updateStock">Update Stock</button>
             </form>
         </div>
+        
+      
 
         <div class="card">
             <h2 class="text-center">Update Delivery Prices</h2>
