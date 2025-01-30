@@ -688,6 +688,46 @@
     function formatPrice(price) {
         return 'GHS' + price.toFixed(2);
     }
+    
+        ogGreyStock = Number('{{nomaskGrey.ogStock}}')
+        reflectorGreyStock = Number('{{nomaskGrey.reflectorStock}}')
+        ogBlackStock = Number('{{nomaskBlack.ogStock}}')
+        reflectorBlackStock = Number('{{nomaskBlack.reflectorStock}}')
+    // Function to get available stock for a given size & color
+        function getStockForItem(item) {
+            let isBlack = item.product_name.includes('Black');
+            let selectedSize = item.selectedSize.trim();
+
+            if (selectedSize === 'OG') {
+                return isBlack ? ogBlackStock : ogGreyStock;
+            } else {
+                return isBlack ? reflectorBlackStock : reflectorGreyStock;
+            }
+        }
+
+        // Function to validate cart items and adjust invalid quantities
+        function validateCartStock() {
+            let cart = JSON.parse(localStorage.getItem('Nomaskcart')) || [];
+            let cartUpdated = false;
+
+            cart.forEach((item, index) => {
+                let maxStock = getStockForItem(item);
+
+                if (item.quantity > maxStock) {
+                    // Adjust quantity if it exceeds stock
+                    cart[index].quantity = maxStock;
+                    cart[index].price = maxStock * (item.price / item.quantity); // Recalculate price
+
+                    alert(`Stock updated for ${item.product_name} (${item.selectedSize}). Max available: ${maxStock}.`);
+                    cartUpdated = true;
+                }
+            });
+
+            if (cartUpdated) {
+                localStorage.setItem('Nomaskcart', JSON.stringify(cart)); // Save corrected cart
+            }
+        }
+    
 
     // Function to render cart items from localStorage
     function renderCartItems() {
@@ -733,7 +773,10 @@
     }
 
     // Initialize the cart items on page load
-    window.onload = renderCartItems;
+    window.onload = function () {
+            validateCartStock();
+            renderCartItems();
+        };
 </script>
 
 <script>

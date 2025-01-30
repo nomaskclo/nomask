@@ -118,12 +118,18 @@ class Checkout(View):
     
     def get(self,request):
         accessible = Accessible.objects.all()[0]
+        nomaskGrey = Product.objects.get(name='NoMask Grey')
+        nomaskBlack = Product.objects.get(name='NoMask Black')
         if accessible.access == True:
             if request.user.is_authenticated:
                 pass
             else:
                 return redirect('/')
-        return render(request,'home/checkout.html') 
+        context ={
+            'nomaskGrey':nomaskGrey,
+            'nomaskBlack':nomaskBlack,
+        }
+        return render(request,'home/checkout.html',context) 
     
     def post(self,request):
         if 'pay' in request.POST:
@@ -195,7 +201,12 @@ class OrderSuccess(View):
         payment = Payment.objects.get(ref=ref)
         if not payment.verified:
             for item in payment.cart.cart_objects.all():
-                pass
+                if item.size == 'OG':
+                    item.product.ogStock -= item.quantity
+                    item.product.save()
+                elif item.size == 'Reflector':
+                    item.product.reflectorStock -= item.quantity
+                    item.product.save()
                 
         payment.verified =True
         payment.save()

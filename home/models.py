@@ -106,7 +106,7 @@ class Payment(models.Model):
     
     @property
     def total_actual(self) -> int:
-        return self.amount + (self.delivery_price * 16)
+        return self.amount + float(self.delivery_price * 16)
     
     @property
     def order_id(self):

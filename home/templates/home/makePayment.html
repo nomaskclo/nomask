@@ -185,7 +185,7 @@
                 amount: `${total}`,
 
                 onSuccess: (transaction) => {
-                    localStorage.removeItem('cart')
+                    localStorage.removeItem('Nomaskcart')
 
                     window.location.href = '/orderSuccess/{{payment.ref}}'
 
