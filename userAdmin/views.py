@@ -218,14 +218,14 @@ class OrdersPage(View):
 
 class OrdersDetailsPage(View):
     
-    def get(self,request,unique_id):
+    def get(self,request,ref):
         if request.user.is_authenticated and request.user.is_superuser:
             pass  # Allow access
         else:
             return redirect('/')
-        payment = Payment.objects.get(unique_id=unique_id)
+        payment = Payment.objects.get(ref=ref)
         context ={
             'payment':payment,
         }
-        return render(request,'userAdmin/ordersDetails.html',context)
+        return render(request,'userAdmin/orderDetails.html',context)
     
