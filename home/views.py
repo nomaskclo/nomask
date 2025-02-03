@@ -14,9 +14,13 @@ from userAdmin.models import Accessible
 class Home(View):
     
     def get(self,request):
-        if request.user.is_authenticated:
+        accessible = Accessible.objects.all()[0]
+        if request.user.is_authenticated and accessible.access == True :
             return redirect('/store/')
-        return render(request,'home/homePage.html')
+        context = {
+            'accessible':accessible,
+        }
+        return render(request,'home/homePage.html',context)
     
     def post(self,request):
         if 'requestAccess' in request.POST:

@@ -8,7 +8,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from .forms import DeliveryPriceForm, AccessibleForm, ProductStockForm
+from .forms import DeliveryPriceForm, AccessibleForm, DeliveryStatusUpdateForm,ProductStockForm
 from .models import Accessible
 # Create your views here.
 
@@ -208,8 +208,25 @@ class OrdersDetailsPage(View):
         else:
             return redirect('/')
         payment = Payment.objects.get(ref=ref)
+        DeliveryStatusUpdateFormCreator = DeliveryStatusUpdateForm(instance=payment)
+
+        
         context ={
             'payment':payment,
+            'DeliveryStatusUpdateFormCreator':DeliveryStatusUpdateFormCreator,
         }
         return render(request,'userAdmin/orderDetails.html',context)
     
+
+    def post(self,request,ref):
+       
+        payment = Payment.objects.get(ref=ref)
+         
+        if 'updateDeliveryStatus' in request.POST:
+            DeliveryStatusUpdateFormCreator = DeliveryStatusUpdateForm(request.POST, instance=payment)
+            if DeliveryStatusUpdateFormCreator.is_valid():
+                DeliveryStatusUpdateFormCreator.save()
+                return redirect(f'/ordersPage/')
+            else:
+                print('Form errors:', DeliveryStatusUpdateFormCreator.errors) 
+        

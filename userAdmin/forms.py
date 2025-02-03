@@ -1,7 +1,8 @@
 from django import forms
 from django.forms import ModelForm
-from home.models import DeliveryPriceByRegion, ProductStock
+from home.models import DeliveryPriceByRegion, ProductStock, Payment
 from .models import Accessible
+
 
 class DeliveryPriceForm(ModelForm):
     class Meta:
@@ -34,3 +35,10 @@ class ProductStockForm(forms.ModelForm):
             'ogBlack': 'NoMask OG Black',
             'ogGrey': 'NoMask OG Grey',
         }
+
+class DeliveryStatusUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = ['delivered']
+
+        
