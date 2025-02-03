@@ -460,26 +460,34 @@
 </head>
 
 <body>
-    <!-- Bootstrap Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #000;" id="navbarbar">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">NoMask</a>
+        <div class="container-fluid position-relative">
+            <!-- Brand on the left -->
+            <a class="navbar-brand" href="{% url 'home' %}">NoMask</a>
+    
+            <!-- Centered Toggler Button -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                style="position: absolute; left: 50%; transform: translateX(-50%);">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div id="cart-btn" style="position: fixed; right:20px;">
+    
+            <!-- Cart Button on the right -->
+            <div id="cart-btn" style="position: absolute; right: 20px;">
                 <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
                         <path
                             d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
-                            stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        </path>
                     </g>
-                </svg><span id="checkout_items" style="color: white;">(0)</span>
+                </svg>
+                <span id="checkout_items" style="color: white;">(0)</span>
             </div>
-            <div></div>
+    
+            <!-- Navbar links -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -498,6 +506,7 @@
             </div>
         </div>
     </nav>
+
     <!-- Sliding Cart -->
     <div class="slide-cart" id="cart">
         <div style="display: flex; justify-content: space-between;align-items: center; padding: 50px;">
