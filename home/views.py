@@ -1,7 +1,7 @@
 import ast
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import AccessRequest, Product,Cart, CartObject, Payment
+from .models import AccessRequest, Product,Cart, CartObject, Payment, ProductStock
 from home.models import DeliveryPriceByRegion
 from django.contrib.auth import login, logout, authenticate
 from .deliveryRatesGen import generate_shipping_cost
@@ -62,13 +62,14 @@ class Store(View):
                 pass
             else:
                 return redirect('/')
-        nomaskGrey = Product.objects.get(name='NoMask Grey')
-        nomaskBlack = Product.objects.get(name='NoMask Black')
-
+        nomaskReflector = Product.objects.get(name='NoMask Reflector')
+        nomaskOG = Product.objects.get(name='NoMask OG')
+        productStock = ProductStock.objects.all()[0]
 
         context ={
-            'nomaskGrey':nomaskGrey,
-            'nomaskBlack':nomaskBlack,
+            'nomaskReflector':nomaskReflector,
+            'nomaskOG':nomaskOG,
+            'productStock':productStock,
         }
         return render(request,'home/store.html',context)
     
@@ -118,16 +119,18 @@ class Checkout(View):
     
     def get(self,request):
         accessible = Accessible.objects.all()[0]
-        nomaskGrey = Product.objects.get(name='NoMask Grey')
-        nomaskBlack = Product.objects.get(name='NoMask Black')
+        nomaskReflector = Product.objects.get(name='NoMask Reflector')
+        nomaskOG = Product.objects.get(name='NoMask OG')
+        productStock = ProductStock.objects.all()[0]
         if accessible.access == True:
             if request.user.is_authenticated:
                 pass
             else:
                 return redirect('/')
         context ={
-            'nomaskGrey':nomaskGrey,
-            'nomaskBlack':nomaskBlack,
+            'nomaskReflector':nomaskReflector,
+            'nomaskOG':nomaskOG,
+            'productStock':productStock,
         }
         return render(request,'home/checkout.html',context) 
     

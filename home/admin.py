@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Cart, CartObject, AccessRequest, Payment, DeliveryPriceByRegion
+from .models import Product, Cart, CartObject, AccessRequest, Payment, DeliveryPriceByRegion, ProductStock
 # Register your models here.
 
 admin.site.register(Product)
@@ -8,3 +8,4 @@ admin.site.register(CartObject)
 admin.site.register(AccessRequest)
 admin.site.register(Payment)
 admin.site.register(DeliveryPriceByRegion)
+admin.site.register(ProductStock)

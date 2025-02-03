@@ -3,12 +3,12 @@ import string
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
-from home.models import AccessRequest, Payment, DeliveryPriceByRegion, Product
+from home.models import AccessRequest, ProductStock, Payment, DeliveryPriceByRegion, Product
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from .forms import DeliveryPriceForm, AccessibleForm
+from .forms import DeliveryPriceForm, AccessibleForm, ProductStockForm
 from .models import Accessible
 # Create your views here.
 
@@ -24,17 +24,19 @@ class UserAdmin(View):
         accessRequests = AccessRequest.objects.all()
         deliveryPrices = DeliveryPriceByRegion.objects.get(name='standard')
         deliveryPricesForm = DeliveryPriceForm(instance=deliveryPrices)
-        
-        nomaskGrey = Product.objects.get(name='NoMask Grey')
-        nomaskBlack = Product.objects.get(name='NoMask Black')
+        productStock = ProductStock.objects.all()[0]
+        nomaskReflector = Product.objects.get(name='NoMask Reflector')
+        nomaskOG = Product.objects.get(name='NoMask OG')
         accessibleForm = AccessibleForm(instance=accessible)
+        productStockForm = ProductStockForm(instance=productStock)
 
         context ={
             'accessRequests':accessRequests,
             'deliveryPricesForm': deliveryPricesForm,
-            'nomaskGrey':nomaskGrey,
-            'nomaskBlack':nomaskBlack,
+            'nomaskReflector':nomaskReflector,
+            'nomaskOG':nomaskOG,
             'accessibleForm':accessibleForm,
+            'productStockForm':productStockForm,
         }
         return render(request,'userAdmin/userAdmin.html',context)
     
@@ -73,29 +75,11 @@ class UserAdmin(View):
             return redirect('/userAdmin/')
 
         if 'updateStock' in request.POST:
-            
+            form = ProductStockForm(request.POST,instance=ProductStock.objects.all()[0])
+            if form.is_valid():
+                form.save()
+                return redirect('/userAdmin/')
 
-            ogGreyStock = request.POST.get('ogGreyStock')
-            reflectorGreyStock = request.POST.get('reflectorGreyStock')
-            ogBlackStock = request.POST.get('ogBlackStock')
-            reflectorBlackStock = request.POST.get('reflectorBlackStock')
-
-            if nomaskGrey.ogStock != int(ogGreyStock):
-                nomaskGrey.ogStock = ogGreyStock
-                nomaskGrey.save()
-            
-            if nomaskGrey.reflectorStock != int(reflectorGreyStock):
-                nomaskGrey.reflectorStock = reflectorGreyStock
-                nomaskGrey.save()
-
-            if nomaskBlack.ogStock != int(ogBlackStock):
-                nomaskBlack.ogStock = ogBlackStock
-                nomaskBlack.save()
-            
-            print(reflectorBlackStock)
-            if nomaskBlack.reflectorStock != int(reflectorBlackStock):
-                nomaskBlack.reflectorStock = reflectorBlackStock
-                nomaskBlack.save()
 
 
             return redirect('/userAdmin/')

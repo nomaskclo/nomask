@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-q#(#0-gvp#wr1bc*&zz=^jkd)m@k(-!rpe)weo666v=*(x%k@m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", ".now.sh"]
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", ".now.sh","www.nomask.store",'https://www.nomask.store','nomask.store']
 
 
 # Application definition

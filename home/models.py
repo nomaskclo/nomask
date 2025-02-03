@@ -26,9 +26,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,null=True)
     updated_at = models.DateTimeField(auto_now=True,null=True)
     is_active = models.BooleanField(default=True)
-    ogStock = models.PositiveIntegerField(default=0)
-    reflectorStock = models.PositiveIntegerField(default=0)
-    
+   
     @property
     def discount_percentage(self):
         """
@@ -46,6 +44,14 @@ class Product(models.Model):
         return self.name
     
 
+class ProductStock(models.Model):
+    reflectorBlack = models.PositiveIntegerField(default=0)
+    reflectorGrey = models.PositiveIntegerField(default=0)
+    relectorWhite = models.PositiveIntegerField(default=0)
+    reflectorPeach = models.PositiveIntegerField(default=0)
+    reflectorTPS = models.PositiveIntegerField(default=0)
+    ogBlack = models.PositiveIntegerField(default=0)
+    ogGrey = models.PositiveIntegerField(default=0)
 
 
 
