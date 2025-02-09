@@ -659,8 +659,8 @@
         }
     })
 </script>
-<!-- Script to handle local storage and cart display -->
 <script>
+    // Toggle cart items display
     const down_arrow = document.getElementById('down-arrow');
     const cart_div = document.getElementById('cart-items-container');
     const total_price_div = document.getElementById('total-price-div');
@@ -682,7 +682,9 @@
         return 'GHS' + price.toFixed(2);
     }
 
-    // UPDATED: Use new productStock fields to check available quantity
+    // --- Updated Stock Checking Functions ---
+
+    // Use new productStock fields to check available quantity
     const ogBlackStock = Number('{{ productStock.ogBlack }}');
     const ogGreyStock = Number('{{ productStock.ogGrey }}');
     const reflectorBlackStock = Number('{{ productStock.reflectorBlack }}');
@@ -693,30 +695,31 @@
 
     // Updated function to get available stock for an item based on its variant and color.
     // The cart item stores product_name (which includes either "OG" or "Reflector")
-    // and selectedSize (the color chosen).
+    // and selectedSize (the color chosen). We now do a case-insensitive check.
     function getStockForItem(item) {
         // Determine variant from product_name
         let variant = item.product_name.includes('Reflector') ? 'Reflector' : 'OG';
-        let color = item.selectedSize.trim();
+        // Convert the selected color to lowercase for comparison
+        let color = item.selectedSize.trim().toLowerCase();
 
         if (variant === 'OG') {
-            if (color === 'Black') {
+            if (color === 'black') {
                 return ogBlackStock;
-            } else if (color === 'Grey') {
+            } else if (color === 'grey') {
                 return ogGreyStock;
             } else {
                 return 0;
             }
         } else if (variant === 'Reflector') {
-            if (color === 'Black') {
+            if (color === 'black') {
                 return reflectorBlackStock;
-            } else if (color === 'Grey') {
+            } else if (color === 'grey') {
                 return reflectorGreyStock;
-            } else if (color === 'White') {
+            } else if (color === 'white') {
                 return reflectorWhiteStock;
-            } else if (color === 'Peach') {
+            } else if (color === 'peach') {
                 return reflectorPeachStock;
-            } else if (color === 'Tree Patterned Skully') {
+            } else if (color === 'tree patterned skully') {
                 return reflectorTreeSkullyStock;
             } else {
                 return 0;
@@ -725,27 +728,33 @@
         return 0;
     }
 
-    // Function to validate cart items and adjust invalid quantities
+    // Updated function to validate cart items and adjust invalid quantities.
+    // If an item's available stock is zero, the item is removed from the cart.
     function validateCartStock() {
         let cart = JSON.parse(localStorage.getItem('Nomaskcart')) || [];
         let cartUpdated = false;
 
-        cart.forEach((item, index) => {
+        // Use filter to remove out-of-stock items and update quantities if needed.
+        let updatedCart = cart.filter(item => {
             let maxStock = getStockForItem(item);
-
-            if (item.quantity > maxStock) {
-                // Adjust quantity if it exceeds available stock
-                cart[index].quantity = maxStock;
-                // Recalculate price based on the unit price
-                cart[index].price = maxStock * (item.price / item.quantity);
-
+            if (maxStock === 0) {
+                alert(`Item ${item.product_name} (${item.selectedSize}) is out of stock and has been removed from your cart.`);
+                cartUpdated = true;
+                return false; // remove the item
+            } else if (item.quantity > maxStock) {
+                // Store the unit price based on current quantity/price
+                let unitPrice = item.price / item.quantity;
+                item.quantity = maxStock;
+                item.price = maxStock * unitPrice;
                 alert(`Stock updated for ${item.product_name} (${item.selectedSize}). Max available: ${maxStock}.`);
                 cartUpdated = true;
+                return true;
             }
+            return true;
         });
 
         if (cartUpdated) {
-            localStorage.setItem('Nomaskcart', JSON.stringify(cart));
+            localStorage.setItem('Nomaskcart', JSON.stringify(updatedCart));
         }
     }
 

@@ -165,18 +165,19 @@ class ManagementLogin(View):
     def post(self, request):
         username = request.POST.get('username')
         password = request.POST.get('password')
+        print(username)
 
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             if user.is_superuser:  # Check if user is a superuser
                 login(request, user)
-                messages.success(request, "Login successful!")
+                print('login successfull')
                 return redirect('/userAdmin/')  # Replace with your dashboard URL name
             else:
-                messages.error(request, "Access denied! Only superusers can log in.")
+                print('Access denied! Only superusers can log in.')
         else:
-            messages.error(request, "Invalid username or password.")
+            print('Invalid Username or Password')
 
         return render(request, 'userAdmin/managementLogin.html')
 
