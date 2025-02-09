@@ -343,12 +343,32 @@
             justify-content: space-around;
             width: 100%;
         }
+.togglerCover {
+    top: 50px;
+    left: 50%;              /* Added to position the element at 50% from the left */
+    transform: translateX(-50%);  /* Added to shift the element left by half its width */
+    background-color: #000;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    position: fixed;
+    z-index: 20;
+    margin: auto;
+}
 
         .lines {
             display: flex;
             justify-content: center;
-            gap: 5%;
+            width: 100%;
+            gap: 10px;
             margin-bottom: 4px;
+
+        }
+        .lines span{
+            width: 40%;
         }
 
         #Grey,
@@ -547,7 +567,7 @@
     <div class="pd-wrap">
         <div class="container">
             <!-- Toggle Buttons & Lines -->
-            <div style="position:fixed; top: 50px;  width: 77%; display: flex; justify-content: center; flex-direction: column; background: black; z-index: 10;">
+            <div class="togglerCover" >
                 <div class="black-grey-to" style="color: white;">
                     <!-- These buttons control the variant (description) -->
                     <span id="Reflectorbtn" data-id="Black" class="on togglebtn">Reflector</span>
@@ -597,7 +617,7 @@
                         <div class="product-info">
                             <!-- The product name updates based on toggle -->
                             <div class="product-name" id="product_name" style="color: white; margin-top: 20px;">
-                                {% if nomaskReflector %}NoMask Reflector{% else %}NoMask OG{% endif %}
+                                {% if nomaskReflector %}REFLECTOR SKULL CAP{% else %}OG SKULL CAP{% endif %}
                             </div>
                             <div>
                                 {% if nomaskReflector.discount_price != 0 %}
@@ -849,7 +869,7 @@
                     }
                 });
                 // Update product name based on the variant
-                product_name.innerHTML = variant === "OG" ? "NoMask OG" : "NoMask Reflector";
+                product_name.innerHTML = variant === "OG" ? "OG SKULL CAP" : "REFLECTOR SKULL CAP";
 
                 // Update the select dropdown options based on the variant.
                 const selectElem = document.getElementById("size");

@@ -144,17 +144,24 @@
         <div class="bg-slide" style="background-image: url({% static 'home/homePage/cover3.jpg' %});"></div>
 
         <!-- Navbar (transparent over the background) -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'home' %}">NOMASK</a>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #000;" id="navbarbar">
+            <div class="container-fluid position-relative">
+                <!-- Brand on the left -->
+                <a class="navbar-brand" href="{% url 'home' %}">NoMask</a>
+        
+                <!-- Centered Toggler Button -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                   >
                     <span class="navbar-toggler-icon"></span>
                 </button>
+        
+        
+                <!-- Navbar links -->
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                            <a class="nav-link" href="{% url 'home' %}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'about' %}">About</a>
@@ -169,6 +176,7 @@
                 </div>
             </div>
         </nav>
+
 
         {% if accessible.access == True %}
         <!-- Email Form -->
@@ -262,7 +270,7 @@
             color: #fff;
             padding: 15px 30px;
             border-radius: 30px;
-            font-size: 1.5rem;
+            font-size: 1rem;
             font-weight: bold;
             text-decoration: none;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
