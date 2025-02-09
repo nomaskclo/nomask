@@ -41,8 +41,8 @@ class UserAdmin(View):
         return render(request,'userAdmin/userAdmin.html',context)
     
     def post(self,request):
-        nomaskGrey = Product.objects.get(name='NoMask Grey')
-        nomaskBlack = Product.objects.get(name='NoMask Black')
+        nomaskReflector = Product.objects.get(name='NoMask Reflector')
+        nomaskOG = Product.objects.get(name='NoMask OG')
         deliveryPrices = DeliveryPriceByRegion.objects.get(name='standard')
 
         if 'updateAccess' in request.POST:
@@ -52,7 +52,7 @@ class UserAdmin(View):
                 form.save()
                 return redirect('/userAdmin/')
 
-        if 'updatePrices':
+        if 'updatePrices' in request.POST:
             form = DeliveryPriceForm(request.POST,instance=deliveryPrices)
             if form.is_valid():
                 form.save()
@@ -60,18 +60,18 @@ class UserAdmin(View):
         
         if 'updateProductPrice' in  request.POST:
             currentProductPrice = int(request.POST.get('newProductPrice'))
-            nomaskBlack.price = currentProductPrice
-            nomaskBlack.save()
-            nomaskGrey.price = currentProductPrice
-            nomaskGrey.save()
+            nomaskReflector.price = currentProductPrice
+            nomaskReflector.save()
+            nomaskOG.price = currentProductPrice
+            nomaskOG.save()
             return redirect('/userAdmin/')
         
         if 'applyDiscount' in request.POST:
             discount = int(request.POST.get('discount_from'))
-            nomaskBlack.discount_price = discount
-            nomaskBlack.save()
-            nomaskGrey.discount_price = discount
-            nomaskGrey.save()
+            nomaskReflector.discount_price = discount
+            nomaskReflector.save()
+            nomaskOG.discount_price = discount
+            nomaskOG.save()
             return redirect('/userAdmin/')
 
         if 'updateStock' in request.POST:
@@ -80,86 +80,81 @@ class UserAdmin(View):
                 form.save()
                 return redirect('/userAdmin/')
 
-
-
-            return redirect('/userAdmin/')
-
-
         if  'grantAccess' in request.POST:
             accessRequest = AccessRequest.objects.get(unique_id=request.POST.get('unique_id'))
 
 
-        # Function to generate a unique password
-        def generate_unique_password():
-            characters = string.ascii_letters + string.digits + string.punctuation
-            password_length = random.randint(4, 6)
+            # Function to generate a unique password
+            def generate_unique_password():
+                characters = string.ascii_letters + string.digits + string.punctuation
+                password_length = random.randint(4, 6)
 
-            while True:
-                # Generate a random password
-                password = ''.join(random.choices(characters, k=password_length))
+                while True:
+                    # Generate a random password
+                    password = ''.join(random.choices(characters, k=password_length))
 
-                # Check if the password already exists in the database
-                if not AccessRequest.objects.filter(password=password).exists():
-                    return password
+                    # Check if the password already exists in the database
+                    if not AccessRequest.objects.filter(password=password).exists():
+                        return password
+                
+            def generate_unique_username(email):
+                base_username = email.split('@')[0]
+                username = base_username
+                counter = 1
+
+                while User.objects.filter(username=username).exists():
+                    username = f"{base_username}{counter}"
+                    counter += 1
+
+                return username
+
+            def create_user(email):
+                if User.objects.filter(email=email).exists():
+                    return ['exists']
+
+                # Generate a unique password
+                password = generate_unique_password()
+                username = generate_unique_username(email)
+
+                # Save the user to the database
+                user = User.objects.create_user(username=username,email=email,password=password)
+                user.save()
+
+                
+                return [username,password,user]
+
+
             
-        def generate_unique_username(email):
-            base_username = email.split('@')[0]
-            username = base_username
-            counter = 1
-
-            while User.objects.filter(username=username).exists():
-                username = f"{base_username}{counter}"
-                counter += 1
-
-            return username
-
-        def create_user(email):
-            if User.objects.filter(email=email).exists():
-               return ['exists']
-
-            # Generate a unique password
-            password = generate_unique_password()
-            username = generate_unique_username(email)
-
-            # Save the user to the database
-            user = User.objects.create_user(username=username,email=email,password=password)
-            user.save()
-
-            
-            return [username,password,user]
-
-
-        
-        accessRequestValue = create_user(accessRequest.email) 
-        accessRequest.username = accessRequestValue[0]
-        accessRequest.password = accessRequestValue[1]
-        accessRequest.user = accessRequestValue[2]
-        accessRequest.save()
-
-
-        print(accessRequestValue,accessRequest.email) 
-
-        subject = 'NoMask Password'
-        text_body = f'Your Nomask Access password is {accessRequestValue[1]}'
-        html_content = render_to_string('userAdmin/accessGrantedEmail.html', { 'subject': subject, 'body':text_body,})
-        print(html_content)
-
-        try:
-            # Create email object with alternatives
-            msg = EmailMultiAlternatives(subject, text_body, "nomaskmob@gmail.com", [accessRequest.email])
-            msg.attach_alternative(html_content, "text/html")  # Attach the HTML version
-            msg.send()
-            print('sent')
-            accessRequest.granted = True
+            accessRequestValue = create_user(accessRequest.email) 
+            accessRequest.username = accessRequestValue[0]
+            accessRequest.password = accessRequestValue[1]
+            accessRequest.user = accessRequestValue[2]
             accessRequest.save()
 
 
-            
-        except Exception as e:
-            print('error')
-            print(f'Error sending email: {e}')  # Log the error for debugging
+            print(accessRequestValue,accessRequest.email) 
 
-            return redirect('userAdmin')
+            subject = 'NoMask Password'
+            text_body = f'Your Nomask Access password is {accessRequestValue[1]}'
+            html_content = render_to_string('userAdmin/accessGrantedEmail.html', { 'subject': subject, 'body':text_body,})
+            print(html_content)
+
+            try:
+                # Create email object with alternatives
+                msg = EmailMultiAlternatives(subject, text_body, "nomaskmob@gmail.com", [accessRequest.email])
+                msg.attach_alternative(html_content, "text/html")  # Attach the HTML version
+                msg.send()
+                print('sent')
+                accessRequest.granted = True
+                accessRequest.save()
+
+
+                
+            except Exception as e:
+                print('error')
+                print(f'Error sending email: {e}')  # Log the error for debugging
+
+                return redirect('/userAdmin/')
 
 
 class ManagementLogin(View):

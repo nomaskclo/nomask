@@ -47,6 +47,8 @@
             width: 100%;
             height: 100vh;
             overflow: hidden;
+            background-color: black;
+            /* Ensure background remains black */
         }
 
         /* Background slide styling */
@@ -58,51 +60,19 @@
             bottom: 0;
             background-size: cover;
             background-position: center;
-            opacity: 0;
-            animation: slideAnimation 15s infinite;
-            z-index: 1;
+            opacity: 1;
+            /* Set to 1 to display the image */
+            /* Optional: add a fade-in animation
+      animation: fadeIn 1s forwards; */
         }
 
-        /* Set different delays for each slide (assumes 3 images) */
-        .bg-slide:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .bg-slide:nth-child(2) {
-            animation-delay: 5s;
-        }
-
-        .bg-slide:nth-child(3) {
-            animation-delay: 10s;
-        }
-
-        /* Keyframes for the slideshow with a slight "bop" effect */
-        @keyframes slideAnimation {
-            0% {
-                opacity: 0;
-                transform: scale(1.1);
-            }
-
-            10% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            30% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            40% {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-
-            100% {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-        }
+        /* Uncomment if you want a fadeIn animation */
+        /*
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    */
 
         /* Ensure the form content is above the background slides */
         #emailForm,
@@ -133,9 +103,26 @@
 
         @media (min-width: 1024px) {
             #content {
-                /* Adjust background position if needed */
                 background-position: center 10%;
             }
+        }
+
+        /* Nicer Shop Button Styles */
+        .shop-button {
+            background-color: #000;
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .shop-button:hover {
+            background-color: #333;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -153,15 +140,13 @@
 
     <!-- Main Content with Background Slideshow -->
     <div id="content">
-        <!-- Background slideshow slides -->
-        <div class="bg-slide" style="background-image: url({% static 'home/homePage/cover.jpg' %})"></div>
-        <div class="bg-slide" style="background-image: url({% static 'home/homePage/cover2.jpg' %})"></div>
-        <div class="bg-slide" style="background-image: url({% static 'home/homePage/cover3.jpg' %})"></div>
+        <!-- Background slideshow slide -->
+        <div class="bg-slide" style="background-image: url({% static 'home/homePage/cover3.jpg' %});"></div>
 
         <!-- Navbar (transparent over the background) -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'home' %}">NoMask</a>
+                <a class="navbar-brand" href="{% url 'home' %}">NOMASK</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -191,25 +176,7 @@
             <form method="post" style="display: flex; flex-direction: column; align-items: center;">
                 {% csrf_token %}
                 <div>
-                    <svg fill="#ffffff" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 100 100"
-                        enable-background="new 0 0 100 100" xml:space="preserve">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <g>
-                                <path d="M33,85h34c5.514,0,10-4.605,10-10.119v-22c0-5.514-4.486-10-10-10v-8.167C67,25.432,59.545,18,50.382,18h-0.334
-                                        C40.647,18,33,25.432,33,34.714v8.167c-5.514,0-10,4.486-10,10v22C23,80.395,27.486,85,33,85z M37,34.714 
-                                        C37,27.638,42.854,22,50.048,22h0.334C57.457,22,63,27.518,63,34.714V43H37V34.714z M73,75c0,3.313-2.687,6-6,6H33
-                                        c-3.313,0-6-2.687-6-6V53c0-3.313,2.687-6,6-6h34c3.313,0,6,2.687,6,6V75z">
-                                </path>
-                                <path d="M47,66.785v4.221C47,72.594,48.287,74,49.875,74h0.25C51.713,74,53,72.594,53,71.006v-4.359
-                                        c1.798-1.068,3.007-3.023,3.007-5.266c0-3.383-2.742-6.125-6.125-6.125s-6.125,2.742-6.125,6.125
-                                        C43.757,63.722,45.07,65.754,47,66.785z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
+                    <!-- Your SVG Icon -->
                 </div>
                 <div>
                     <input type="email" name="email" id="email" placeholder="Email" required>
@@ -229,25 +196,7 @@
             <form method="POST" style="display: flex; flex-direction: column; align-items: center;">
                 {% csrf_token %}
                 <div>
-                    <svg fill="#ffffff" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 100 100"
-                        enable-background="new 0 0 100 100" xml:space="preserve">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <g>
-                                <path d="M33,85h34c5.514,0,10-4.605,10-10.119v-22c0-5.514-4.486-10-10-10v-8.167C67,25.432,59.545,18,50.382,18h-0.334
-                                        C40.647,18,33,25.432,33,34.714v8.167c-5.514,0-10,4.486-10,10v22C23,80.395,27.486,85,33,85z M37,34.714 
-                                        C37,27.638,42.854,22,50.048,22h0.334C57.457,22,63,27.518,63,34.714V43H37V34.714z M73,75c0,3.313-2.687,6-6,6H33
-                                        c-3.313,0-6-2.687-6-6V53c0-3.313,2.687-6,6-6h34c3.313,0,6,2.687,6,6V75z">
-                                </path>
-                                <path d="M47,66.785v4.221C47,72.594,48.287,74,49.875,74h0.25C51.713,74,53,72.594,53,71.006v-4.359
-                                        c1.798-1.068,3.007-3.023,3.007-5.266c0-3.383-2.742-6.125-6.125-6.125s-6.125,2.742-6.125,6.125
-                                        C43.757,63.722,45.07,65.754,47,66.785z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
+                    <!-- Your SVG Icon -->
                 </div>
                 <div>
                     <input type="password" name="password" id="password" placeholder="Password" required>
@@ -261,13 +210,11 @@
             </div>
         </div>
         {% else %}
-        <!-- SHOP container with explicit positioning to remain on top of background slides -->
+        <!-- SHOP container -->
         <div
-            style="position: relative; z-index: 2; display: flex; ;justify-content: center; align-items: center; height: 100vh;">
-            <a href="{% url 'store' %}" style="text-decoration: none;">
-                <div style="background-color: #000; color: white; padding: 10px;">
-                    SHOP
-                </div>
+            style="position: relative; z-index: 2; display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <a href="{% url 'store' %}" class="shop-button">
+                SHOP NOW
             </a>
         </div>
         {% endif %}
@@ -308,6 +255,25 @@
             emailForm.style.display = 'flex';
         };
     </script>
+    <!-- Shop Button Styles -->
+    <style>
+        .shop-button {
+            background-color: #000;
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .shop-button:hover {
+            background-color: #333;
+            transform: scale(1.05);
+        }
+    </style>
 </body>
 
 </html>

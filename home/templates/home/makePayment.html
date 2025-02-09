@@ -130,13 +130,13 @@
                                     <div style="margin: 10px; display: flex; gap: 10px; align-items: center;">
                                         {% if 'Reflector' in item.product.name %}
                                         {% if item.size == "Black" %}
-                                        <img src="{% static 'home/store/black.jpg' %}" alt="Product Image"
+                                        <img src="{% static 'home/store/reflector_black.jpg' %}" alt="Product Image"
                                             style="width: 30px; height: 30px; border-radius: 5px;">
                                         {% elif item.size == "Grey" %}
-                                        <img src="{% static 'home/store/grey_new.jpg' %}" alt="Product Image"
+                                        <img src="{% static 'home/store/reflector_grey.jpg' %}" alt="Product Image"
                                             style="width: 50px; height: 50px; border-radius: 5px;">
                                         {% elif item.size == "White" %}
-                                        <img src="{% static 'home/store/white.jpg' %}" alt="Product Image"
+                                        <img src="{% static 'home/product/white.jpg' %}" alt="Product Image"
                                             style="width: 50px; height: 50px; border-radius: 5px;">
                                         {% elif item.size == "Peach" %}
                                         <img src="{% static 'home/product/peach.jpg' %}" alt="Product Image"
@@ -150,13 +150,10 @@
                                         {% endif %}
                                         {% else %}
                                         {% if item.size == "Black" %}
-                                        <img src="{% static 'home/store/black.jpg' %}" alt="Product Image"
+                                        <img src="{% static 'home/store/og_black.jpg' %}" alt="Product Image"
                                             style="width: 30px; height: 30px; border-radius: 5px;">
                                         {% elif item.size == "Grey" %}
-                                        <img src="{% static 'home/store/grey_new.jpg' %}" alt="Product Image"
-                                            style="width: 50px; height: 50px; border-radius: 5px;">
-                                        {% else %}
-                                        <img src="{% static 'home/store/grey_new.jpg' %}" alt="Product Image"
+                                        <img src="{% static 'home/store/og_grey.jpg' %}" alt="Product Image"
                                             style="width: 50px; height: 50px; border-radius: 5px;">
                                         {% endif %}
                                         {% endif %}

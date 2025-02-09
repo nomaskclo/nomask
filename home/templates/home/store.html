@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <title>NM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" type="text/css"
@@ -456,6 +456,30 @@
                 width: 100%;
             }
         }
+.image-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.image-wrapper::before {
+    content: '';
+    position: absolute;
+    
+    right: 0;
+  
+    left:0 ;
+    background-image: url(" {% static 'home/store/logo_white.png' %} ");
+    background-size: 120% 120%;
+    background-position: center;
+    z-index: -1;
+  
+}
+
+.imageCover {
+    max-height: 450px;
+    width: auto !important;
+    position: relative;
+}
     </style>
 </head>
 
@@ -464,14 +488,14 @@
         <div class="container-fluid position-relative">
             <!-- Brand on the left -->
             <a class="navbar-brand" href="{% url 'home' %}">NoMask</a>
-    
+
             <!-- Centered Toggler Button -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
                 style="position: absolute; left: 50%; transform: translateX(-50%);">
                 <span class="navbar-toggler-icon"></span>
             </button>
-    
+
             <!-- Cart Button on the right -->
             <div id="cart-btn" style="position: absolute; right: 20px;">
                 <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -486,7 +510,7 @@
                 </svg>
                 <span id="checkout_items" style="color: white;">(0)</span>
             </div>
-    
+
             <!-- Navbar links -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
@@ -509,7 +533,7 @@
 
     <!-- Sliding Cart -->
     <div class="slide-cart" id="cart">
-        <div style="display: flex; justify-content: space-between;align-items: center; padding: 50px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 50px;">
             <div id="bag-header">CART</div>
             <div class="hamburger_close" id="close-cart-button">
                 <i class="fa fa-times" aria-hidden="true"></i>
@@ -523,7 +547,7 @@
     <div class="pd-wrap">
         <div class="container">
             <!-- Toggle Buttons & Lines -->
-            <div style="margin: 20px;">
+            <div style="position:fixed; top: 50px;  width: 77%; display: flex; justify-content: center; flex-direction: column; background: black; z-index: 10;">
                 <div class="black-grey-to" style="color: white;">
                     <!-- These buttons control the variant (description) -->
                     <span id="Reflectorbtn" data-id="Black" class="on togglebtn">Reflector</span>
@@ -534,36 +558,46 @@
                     <span id="Grey" class="offLine"></span>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin-top: 100px;">
                 <div class="col-md-6">
                     <div id="slider">
-                        <div class="item" style="position: relative;">
-                            {% if nomaskReflector.discount_price != 0 %}
-                            <span
-                                style="background-color: #c03d3d; color: white; font-weight: bold; padding: 5px 10px; border-radius: 5px; font-size: 14px; position: relative; top: -5px; left: 447px;">
-                                -{{ nomaskReflector.discount_percentage }}% off
-                            </span>
-                            {% endif %}
-                            <!-- Product images – extra images added for Reflector -->
-                            <img src="{% static 'home/store/black.jpg' %}" id="blackcover"
-                                style="width: 100%; display: block;" />
-                            <img src="{% static 'home/store/grey_new.jpg' %}" id="greycover"
-                                style="display: none; width: 100%;" />
+                                {% if nomaskReflector.discount_price != 0 %}
+                                <span
+                                    style="background-color: #c03d3d; color: white; font-weight: bold; padding: 5px 10px; border-radius: 5px; font-size: 14px; position: relative; top: -5px; left: 447px;">
+                                    -{{ nomaskReflector.discount_percentage }}% off
+                                </span>
+                                {% endif %}
+                        <div class="item" style="position: relative; display: flex; justify-content: center;align-self: fle;">
+                   
+                            <!-- For Black images: two sets (OG and Reflector) -->
+                          <div class="image-wrapper">
+                            <img src="{% static 'home/store/og_black.jpg' %}" id="blackcoverOG"
+                                style="width: 100%; display: {% if not nomaskReflector %}block{% else %}none{% endif %};" class="imageCover" />
+                          </div>
+                            <img src="{% static 'home/store/reflector_black.jpg' %}" id="blackcoverReflector"
+                                style="width: 100%; display: {% if nomaskReflector %}block{% else %}none{% endif %};"
+                                class="imageCover" />
+                            <!-- For Grey images: two sets (OG and Reflector) -->
+                            <img src="{% static 'home/store/og_grey.jpg' %}" id="greycoverOG"
+                                style="width: 100%; display: none;" class="imageCover" />
+                            <img src="{% static 'home/store/reflector_grey.jpg' %}" id="greycoverReflector"
+                                style="width: 100%; display: none;" class="imageCover" />
+                            <!-- Other color images (same for both variants) -->
                             <img src="{% static 'home/product/peach.jpg' %}" id="peachcover"
-                                style="display: none; width: 100%;" />
+                                style="display: none; width: 100%;" class="imageCover" />
                             <img src="{% static 'home/product/tree_patterned_skully.jpg' %}" id="treecover"
-                                style="display: none; width: 100%;" />
+                                style="display: none; width: 100%;" class="imageCover" />
                             <img src="{% static 'home/product/white.jpg' %}" id="whitecover"
-                                style="display: none; width: 100%;" />
+                                style="display: none; width: 100%;" class="imageCover" />
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="product-dtl">
                         <div class="product-info">
-                            <!-- The product name will update based on the toggle buttons -->
+                            <!-- The product name updates based on toggle -->
                             <div class="product-name" id="product_name" style="color: white; margin-top: 20px;">
-                                NoMask OG
+                                {% if nomaskReflector %}NoMask Reflector{% else %}NoMask OG{% endif %}
                             </div>
                             <div>
                                 {% if nomaskReflector.discount_price != 0 %}
@@ -573,27 +607,32 @@
                                 </div>
                                 {% endif %}
                                 <div class="product-price-discount" style="color: white;" id="product_price"
-                                    data-price="{{ nomaskReflector.price }}">
-                                    GHS{{ nomaskReflector.price }}
+                                    data-price="{% if nomaskReflector %}{{ nomaskReflector.price }}{% else %}{{ nomaskOG.price }}{% endif %}">
+                                    GHS{% if nomaskReflector %}{{ nomaskReflector.price }}{% else %}{{ nomaskOG.price
+                                    }}{% endif %}
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div style="display: flex; gap: 5px; color:white; align-items: center;">
+                                <div style="display: flex; gap: 5px; color: white; align-items: center;">
                                     <div style="color: rgba(255, 0, 0, 0.541);">
                                         Options Available – change color and variant.
                                     </div>
                                 </div>
-                                <!-- Here the label remains "Pieces" -->
-                                <label for="size" style="color: white;">Pieces</label>
+                                <!-- Label remains "Pieces" -->
+                                <label for="size" style="color: white;">COLORWAYS</label>
                                 <select id="size" name="size" class="form-control">
-                                    <!-- By default (for OG) only Black and Grey are shown. For Reflector, options will update -->
+                                    {% if nomaskReflector %}
                                     <option class="option" value="Black">Black</option>
                                     <option class="option" value="Grey">Grey</option>
                                     <option class="option" value="White">White</option>
                                     <option class="option" value="Peach">Peach</option>
                                     <option class="option" value="Tree Patterned Skully">Tree Patterned Skully</option>
+                                    {% else %}
+                                    <option class="option" value="Black">Black</option>
+                                    <option class="option" value="Grey">Grey</option>
+                                    {% endif %}
                                 </select>
                             </div>
                         </div>
@@ -609,7 +648,7 @@
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="description" role="tabpanel"
                                     aria-labelledby="description-tab">
-                                    <!-- Two description divs – only one is shown based on the toggle buttons -->
+                                    <!-- Two description divs – only one is shown based on the toggle -->
                                     <div id="ogBlack" style="color: white;">
                                         this is the OG description
                                     </div>
@@ -644,8 +683,8 @@
             <img src="{% static 'home/store/logo_white.png' %}" alt="NoMask Logo">
         </div>
         <div class="social-icons" style="margin: 20px;">
-            <a href="https://www.instagram.com/nomask.clo/" target="_blank"><svg width="35px" height="35px"
-                    viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <a href="https://www.instagram.com/nomask.clo/" target="_blank">
+                <svg width="35px" height="35px" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
@@ -662,20 +701,23 @@
                             d="M6 15.6C6 12.2397 6 10.5595 6.65396 9.27606C7.2292 8.14708 8.14708 7.2292 9.27606 6.65396C10.5595 6 12.2397 6 15.6 6H16.4C19.7603 6 21.4405 6 22.7239 6.65396C23.8529 7.2292 24.7708 8.14708 25.346 9.27606C26 10.5595 26 12.2397 26 15.6V16.4C26 19.7603 26 21.4405 25.346 22.7239C24.7708 23.8529 23.8529 24.7708 22.7239 25.346C21.4405 26 19.7603 26 16.4 26H15.6C12.2397 26 10.5595 26 9.27606 25.346C8.14708 24.7708 7.2292 23.8529 6.65396 22.7239C6 21.4405 6 19.7603 6 16.4V15.6ZM15.6 8H16.4C18.1132 8 19.2777 8.00156 20.1779 8.0751C21.0548 8.14674 21.5032 8.27659 21.816 8.43597C22.5686 8.81947 23.1805 9.43139 23.564 10.184C23.7234 10.4968 23.8533 10.9452 23.9249 11.8221C23.9984 12.7223 24 13.8868 24 15.6V16.4C24 18.1132 23.9984 19.2777 23.9249 20.1779C23.8533 21.0548 23.7234 21.5032 23.564 21.816C23.1805 22.5686 22.5686 23.1805 21.816 23.564C21.5032 23.7234 21.0548 23.8533 20.1779 23.9249C19.2777 23.9984 18.1132 24 16.4 24H15.6C13.8868 24 12.7223 23.9984 11.8221 23.9249C10.9452 23.8533 10.4968 23.7234 10.184 23.564C9.43139 23.1805 8.81947 22.5686 8.43597 21.816C8.27659 21.5032 8.14674 21.0548 8.0751 20.1779C8.00156 19.2777 8 18.1132 8 16.4V15.6C8 13.8868 8.00156 12.7223 8.0751 11.8221C8.14674 10.9452 8.27659 10.4968 8.43597 10.184C8.81947 9.43139 9.43139 8.81947 10.184 8.43597C10.4968 8.27659 10.9452 8.14674 11.8221 8.0751C12.7223 8.00156 13.8868 8 15.6 8Z"
                             fill="white"></path>
                         <defs>
-                            <radialGradient id="paint0_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                            <radialGradient id="paint0_radial_87_7153" cx="0" cy="0" r="1"
+                                gradientUnits="userSpaceOnUse"
                                 gradientTransform="translate(12 23) rotate(-55.3758) scale(25.5196)">
                                 <stop stop-color="#B13589"></stop>
                                 <stop offset="0.79309" stop-color="#C62F94"></stop>
                                 <stop offset="1" stop-color="#8A3AC8"></stop>
                             </radialGradient>
-                            <radialGradient id="paint1_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                            <radialGradient id="paint1_radial_87_7153" cx="0" cy="0" r="1"
+                                gradientUnits="userSpaceOnUse"
                                 gradientTransform="translate(11 31) rotate(-65.1363) scale(22.5942)">
                                 <stop stop-color="#E0E8B7"></stop>
                                 <stop offset="0.444662" stop-color="#FB8A2E"></stop>
                                 <stop offset="0.71474" stop-color="#E2425C"></stop>
                                 <stop offset="1" stop-color="#E2425C" stop-opacity="0"></stop>
                             </radialGradient>
-                            <radialGradient id="paint2_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                            <radialGradient id="paint2_radial_87_7153" cx="0" cy="0" r="1"
+                                gradientUnits="userSpaceOnUse"
                                 gradientTransform="translate(0.500002 3) rotate(-8.1301) scale(38.8909 8.31836)">
                                 <stop offset="0.156701" stop-color="#406ADC"></stop>
                                 <stop offset="0.467799" stop-color="#6A45BE"></stop>
@@ -692,20 +734,18 @@
 </body>
 <!-- Scripts -->
 <script>
-    // Stock variables (ensure your Django context provides these extra stocks)
+    // ---------- Stock variables ----------
     const ogBlackStock = Number('{{ productStock.ogBlack }}');
     const ogGreyStock = Number('{{ productStock.ogGrey }}');
-    const reflectorBlackStock = Number('{{ productStock.reflectorBlack}}');
-    const reflectorGreyStock = Number('{{ productStock.reflectorGrey}}');
-    const reflectorPeachStock = Number('{{ productStock.reflectorPeach}}');
+    const reflectorBlackStock = Number('{{ productStock.reflectorBlack }}');
+    const reflectorGreyStock = Number('{{ productStock.reflectorGrey }}');
+    const reflectorPeachStock = Number('{{ productStock.reflectorPeach }}');
     const reflectorTreeSkullyStock = Number('{{ productStock.reflectorTPS }}');
     const reflectorWhiteStock = Number('{{ productStock.reflectorWhite }}');
 
-    // These two constants come from your original code.
     const grey = "387400c2-2eb8-43f0-b0ef-960d4b9bc982";
     const black = "39e49b03-180b-41a9-9201-abc2aac773a7";
 
-    // Elements used in multiple functions
     const product_name = document.getElementById("product_name");
     const productCount = document.getElementById("productCount");
     const soldOut = document.getElementById("soldOut");
@@ -782,22 +822,18 @@
                 if (variant === "OG") {
                     document.getElementById("ogBlack").style.display = "block";
                     document.getElementById("reflectorBlack").style.display = "none";
-
                     activeLine = document.getElementById('Grey');
                     activeLine.classList.add('onLine');
                     activeLine.classList.remove('offLine');
-
                     downLine = document.getElementById('Black');
                     downLine.classList.add('offLine');
                     downLine.classList.remove('onLine');
                 } else {
                     document.getElementById("reflectorBlack").style.display = "block";
                     document.getElementById("ogBlack").style.display = "none";
-
                     activeLine = document.getElementById('Black');
                     activeLine.classList.add('onLine');
                     activeLine.classList.remove('offLine');
-
                     downLine = document.getElementById('Grey');
                     downLine.classList.add('offLine');
                     downLine.classList.remove('onLine');
@@ -833,7 +869,6 @@
                 }
                 // Trigger change event to update the image based on the new options
                 selectElem.dispatchEvent(new Event("change"));
-
                 updateStockView();
             };
         });
@@ -872,22 +907,28 @@
     // ---------- 4. Dropdown (Color) Change – Toggle Product Image ----------
     document.getElementById("size").addEventListener("change", function () {
         let selectedColor = this.value;
-        // Hide all images first
-        document.getElementById("blackcover").style.display = "none";
-        document.getElementById("greycover").style.display = "none";
-        if (document.getElementById("peachcover")) {
-            document.getElementById("peachcover").style.display = "none";
-        }
-        if (document.getElementById("treecover")) {
-            document.getElementById("treecover").style.display = "none";
-        }
-        if (document.getElementById("whitecover")) {
-            document.getElementById("whitecover").style.display = "none";
-        }
+        // Hide all images for Black and Grey (both sets) and for other colors
+        document.getElementById("blackcoverOG").style.display = "none";
+        document.getElementById("blackcoverReflector").style.display = "none";
+        document.getElementById("greycoverOG").style.display = "none";
+        document.getElementById("greycoverReflector").style.display = "none";
+        document.getElementById("peachcover").style.display = "none";
+        document.getElementById("treecover").style.display = "none";
+        document.getElementById("whitecover").style.display = "none";
+
+        let variant = document.getElementById("product_name").innerText;
         if (selectedColor === "Black") {
-            document.getElementById("blackcover").style.display = "block";
+            if (variant.includes("Reflector")) {
+                document.getElementById("blackcoverReflector").style.display = "block";
+            } else {
+                document.getElementById("blackcoverOG").style.display = "block";
+            }
         } else if (selectedColor === "Grey") {
-            document.getElementById("greycover").style.display = "block";
+            if (variant.includes("Reflector")) {
+                document.getElementById("greycoverReflector").style.display = "block";
+            } else {
+                document.getElementById("greycoverOG").style.display = "block";
+            }
         } else if (selectedColor === "White") {
             document.getElementById("whitecover").style.display = "block";
         } else if (selectedColor === "Peach") {
@@ -931,6 +972,7 @@
     function formatPrice(price) {
         return "GHS" + price.toFixed(2);
     }
+
     function displayCartItems() {
         let cartBox = document.getElementById("cartBox");
         cartBox.innerHTML = "";
@@ -940,14 +982,14 @@
         if (cart.length > 0) {
             cart.forEach((item) => {
                 let cartItemDiv = `
-          <div class="cart-item" style="padding: 10px; margin: 10px; display: flex; align-items: center;  position: relative;">
+          <div class="cart-item" style="padding: 10px; margin: 10px; display: flex; align-items: center; position: relative;">
             <img src="${item.image_url}" alt="Product Image" width="100" style="border-radius: 8px; margin-right: 15px;">
             <div style="flex: 1;">
-              <div style="display:flex; gap:5px;">
+              <div style="display: flex; gap:5px;">
                 <p style="margin: 0; font-weight: bold; font-size: 14px;">${item.product_name}</p>
                 <p style="margin: 0; font-size: 14px;"> x${item.quantity}</p>
               </div>
-              <div style="display:flex; justify-content:space-between;">
+              <div style="display: flex; justify-content: space-between;">
                 <p style="margin: 0; font-size: 14px;">${item.selectedSize}</p>
                 <p style="margin: 0; font-size: 14px;"> GHS ${item.price}</p>
               </div>
@@ -965,21 +1007,25 @@
         </div>
         <div style="text-align: center; margin: 20px;">
           <a href="{% url 'checkout' %}">
-            <button style="padding: 10px 20px; width:100%; background-color: #228B22; color: white; border: none; border-radius: 5px; cursor: pointer;">Checkout</button>
+            <button style="padding: 10px 20px; width:100%; background-color: #228B22; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Checkout
+            </button>
           </a>
         </div>
         <div style="width:100%; height:150px"></div>
       `;
         } else {
-            cartBox.innerHTML = '<div class="empty-cart" style="display:flex; justify-content:center;">Nothing in Cart</div>';
+            cartBox.innerHTML = '<div class="empty-cart" style="display: flex; justify-content: center;">Nothing in Cart</div>';
         }
     }
+
     function removeFromCart(productId) {
         let cart = JSON.parse(localStorage.getItem("Nomaskcart")) || [];
         cart = cart.filter((item) => item.product_id_date !== productId);
         localStorage.setItem("Nomaskcart", JSON.stringify(cart));
         displayCartItems();
     }
+
     window.onload = displayCartItems;
 </script>
 
@@ -1000,9 +1046,17 @@
         }
         let image_url;
         if (selectedSize === "Black") {
-            image_url = document.getElementById("blackcover").src;
+            if (productName.includes("Reflector")) {
+                image_url = document.getElementById("blackcoverReflector").src;
+            } else {
+                image_url = document.getElementById("blackcoverOG").src;
+            }
         } else if (selectedSize === "Grey") {
-            image_url = document.getElementById("greycover").src;
+            if (productName.includes("Reflector")) {
+                image_url = document.getElementById("greycoverReflector").src;
+            } else {
+                image_url = document.getElementById("greycoverOG").src;
+            }
         } else if (selectedSize === "White") {
             image_url = document.getElementById("whitecover").src;
         } else if (selectedSize === "Peach") {
