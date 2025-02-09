@@ -647,7 +647,7 @@
                                 <label for="size" style="color: white;">COLORWAYS</label>
                                 <select id="size" name="size" class="form-control">
                                     {% if nomaskReflector %}
-                                    <option class="option" value="Black">Black</option>
+                                    <option class="option" value="Black" selected>Black</option>
                                     <option class="option" value="Grey">Grey</option>
                                     <option class="option" value="White">White</option>
                                     <option class="option" value="Peach">Peach</option>
@@ -758,7 +758,7 @@
 <!-- Scripts -->
 <script>
     // Global variable to track current variant
-    let currentVariant = "OG";
+    let currentVariant = "Reflector";
 </script>
 <script>
     // ---------- Stock variables ----------
@@ -946,7 +946,7 @@
         document.getElementById("peachcover").style.display = "none";
         document.getElementById("treecover").style.display = "none";
         document.getElementById("whitecover").style.display = "none";
-
+       
         // Use the global currentVariant variable instead of reading product_name.innerText
         if (selectedColor === "Black") {
             if (currentVariant === "Reflector") {

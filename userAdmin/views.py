@@ -226,3 +226,8 @@ class OrdersDetailsPage(View):
             else:
                 print('Form errors:', DeliveryStatusUpdateFormCreator.errors) 
         
+
+class ContactRequests(View):
+    
+    def get(self,request):
+        return render(request,'userAdmin/contactRequests.html')

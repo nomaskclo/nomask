@@ -1,11 +1,12 @@
 import ast
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import AccessRequest, Product,Cart, CartObject, Payment, ProductStock
+from .models import AccessRequest, Product,Cart, ContactData,CartObject, Payment, ProductStock
 from home.models import DeliveryPriceByRegion
 from django.contrib.auth import login, logout, authenticate
 from .deliveryRatesGen import generate_shipping_cost
 from userAdmin.models import Accessible
+from django.contrib import messages
 
 
 
@@ -191,6 +192,35 @@ class Checkout(View):
 class Contact(View):
     def get(self,request):
         return render(request,'home/contact.html')
+    
+    def post(self,request):
+
+        if 'contact' in request.POST:
+            try:
+                first_name = request.POST.get('fname')
+                last_name = request.POST.get('lname')
+                email = request.POST.get('email')
+                phone = request.POST.get('phone')
+                message = request.POST.get('message')
+
+                contactdata  = ContactData(first_name=first_name,last_name=last_name,email=email,phone=phone,message=message)  
+
+                contactdata.save()
+
+                messages.success(request,'Message sent successfully')
+
+                return redirect('/contact/')
+
+                
+
+            except Exception as e:
+                messages.error(request,'An error occured! Please try again')
+
+                return redirect('/contact/')
+
+                     
+
+
 
 class About(View):
     def get(self,request):

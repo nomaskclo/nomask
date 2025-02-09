@@ -14,7 +14,6 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-        
         }
 
         .contact-container {
@@ -63,7 +62,7 @@
         button:hover {
             background-color: #218838;
         }
-        
+
         footer {
             position: relative;
             bottom: 0;
@@ -86,6 +85,41 @@
             font-size: 24px;
             margin: 0 10px;
         }
+
+        /* Popup styling - modified */
+        .popup {
+            position: fixed;
+            top: 20px; /* Positioned at the top of the page */
+            left: 50%;
+            transform: translateX(-50%); /* Horizontally centered */
+            background-color: white;
+            color: black;
+            padding: 20px 30px;
+            border-radius: 8px;
+            z-index: 10000;
+            max-width: 80%;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .popup p {
+            margin: 0 0 10px;
+            font-size: 16px;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 
@@ -104,18 +138,28 @@
                         <a class="nav-link" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'about' %}" >About</a>
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'store' %}">Store</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'contact' %}"  aria-current="page">Contact</a>
+                        <a class="nav-link active" href="{% url 'contact' %}" aria-current="page">Contact</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+
+    <!-- Popup: Display Django messages on page load -->
+    {% if messages %}
+    <div id="popup" class="popup">
+        <span class="popup-close" id="popup-close">×</span>
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     <!-- Contact Page Content -->
     <div class="contact-container">
@@ -143,61 +187,443 @@
                     required></textarea>
                 <label for="message">Your Message</label>
             </div>
-            <button type="submit">Send Message</button>
+            <button type="submit" name="contact">Send Message</button>
         </form>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-        <footer>
-            <div>
-                <img src="{% static 'home/store/logo_white.png' %}" alt="NoMask Logo">
+    <footer>
+        <div>
+            <img src="{% static 'home/store/logo_white.png' %}" alt="NoMask Logo">
+        </div>
+        <div class="social-icons" style="margin: 20px;">
+            <a href="https://www.instagram.com/nomask.clo/" target="_blank">
+                <svg width="35px" height="35px" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint0_radial_87_7153)"></rect>
+                        <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint1_radial_87_7153)"></rect>
+                        <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint2_radial_87_7153)"></rect>
+                        <path
+                            d="M23 10.5C23 11.3284 22.3284 12 21.5 12C20.6716 12 20 11.3284 20 10.5C20 9.67157 20.6716 9 21.5 9C22.3284 9 23 9.67157 23 10.5Z"
+                            fill="white"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M16 21C18.7614 21 21 18.7614 21 16C21 13.2386 18.7614 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21ZM16 19C17.6569 19 19 17.6569 19 16C19 14.3431 17.6569 13 16 13C14.3431 13 13 14.3431 13 16C13 17.6569 14.3431 19 16 19Z"
+                            fill="white"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M6 15.6C6 12.2397 6 10.5595 6.65396 9.27606C7.2292 8.14708 8.14708 7.2292 9.27606 6.65396C10.5595 6 12.2397 6 15.6 6H16.4C19.7603 6 21.4405 6 22.7239 6.65396C23.8529 7.2292 24.7708 8.14708 25.346 9.27606C26 10.5595 26 12.2397 26 15.6V16.4C26 19.7603 26 21.4405 25.346 22.7239C24.7708 23.8529 23.8529 24.7708 22.7239 25.346C21.4405 26 19.7603 26 16.4 26H15.6C12.2397 26 10.5595 26 9.27606 25.346C8.14708 24.7708 7.2292 23.8529 6.65396 22.7239C6 21.4405 6 19.7603 6 16.4V15.6ZM15.6 8H16.4C18.1132 8 19.2777 8.00156 20.1779 8.0751C21.0548 8.14674 21.5032 8.27659 21.816 8.43597C22.5686 8.81947 23.1805 9.43139 23.564 10.184C23.7234 10.4968 23.8533 10.9452 23.9249 11.8221C23.9984 12.7223 24 13.8868 24 15.6V16.4C24 18.1132 23.9984 19.2777 23.9249 20.1779C23.8533 21.0548 23.7234 21.5032 23.564 21.816C23.1805 22.5686 22.5686 23.1805 21.816 23.564C21.5032 23.7234 21.0548 23.8533 20.1779 23.9249C19.2777 23.9984 18.1132 24 16.4 24H15.6C13.8868 24 12.7223 23.9984 11.8221 23.9249C10.9452 23.8533 10.4968 23.7234 10.184 23.564C9.43139 23.1805 8.81947 22.5686 8.43597 21.816C8.27659 21.5032 8.14674 21.0548 8.0751 20.1779C8.00156 19.2777 8 18.1132 8 16.4V15.6C8 13.8868 8.00156 12.7223 8.0751 11.8221C8.14674 10.9452 8.27659 10.4968 8.43597 10.184C8.81947 9.43139 9.43139 8.81947 10.184 8.43597C10.4968 8.27659 10.9452 8.14674 11.8221 8.0751C12.7223 8.00156 13.8868 8 15.6 8Z"
+                            fill="white"></path>
+                        <defs>
+                            <radialGradient id="paint0_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                                gradientTransform="translate(12 23) rotate(-55.3758) scale(25.5196)">
+                                <stop stop-color="#B13589"></stop>
+                                <stop offset="0.79309" stop-color="#C62F94"></stop>
+                                <stop offset="1" stop-color="#8A3AC8"></stop>
+                            </radialGradient>
+                            <radialGradient id="paint1_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                                gradientTransform="translate(11 31) rotate(-65.1363) scale(22.5942)">
+                                <stop stop-color="#E0E8B7"></stop>
+                                <stop offset="0.444662" stop-color="#FB8A2E"></stop>
+                                <stop offset="0.71474" stop-color="#E2425C"></stop>
+                                <stop offset="1" stop-color="#E2425C" stop-opacity="0"></stop>
+                            </radialGradient>
+                            <radialGradient id="paint2_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                                gradientTransform="translate(0.500002 3) rotate(-8.1301) scale(38.8909 8.31836)">
+                                <stop offset="0.156701" stop-color="#406ADC"></stop>
+                                <stop offset="0.467799" stop-color="#6A45BE"></stop>
+                                <stop offset="1" stop-color="#6A45BE" stop-opacity="0"></stop>
+                            </radialGradient>
+                        </defs>
+                    </g>
+                </svg></a>
+        </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Global variable to track current variant
+        let currentVariant = "OG";
+    </script>
+    <script>
+        // ---------- Stock variables ----------
+        const ogBlackStock = Number('{{ productStock.ogBlack }}');
+        const ogGreyStock = Number('{{ productStock.ogGrey }}');
+        const reflectorBlackStock = Number('{{ productStock.reflectorBlack }}');
+        const reflectorGreyStock = Number('{{ productStock.reflectorGrey }}');
+        const reflectorPeachStock = Number('{{ productStock.reflectorPeach }}');
+        const reflectorTreeSkullyStock = Number('{{ productStock.reflectorTPS }}');
+        const reflectorWhiteStock = Number('{{ productStock.reflectorWhite }}');
+
+        const grey = "387400c2-2eb8-43f0-b0ef-960d4b9bc982";
+        const black = "39e49b03-180b-41a9-9201-abc2aac773a7";
+
+        const product_name = document.getElementById("product_name");
+        const productCount = document.getElementById("productCount");
+        const soldOut = document.getElementById("soldOut");
+
+        // ---------- 1. Quantity + Stock Handling ----------
+        function getStockForSelectedOption() {
+            let selectedOption = document.getElementById("size").value.trim();
+            let descriptionVariant = document.querySelector(".togglebtn.on").innerHTML.trim();
+            if (descriptionVariant === "OG") {
+                return selectedOption === "Black" ? ogBlackStock : ogGreyStock;
+            } else {
+                if (selectedOption === "Black") {
+                    return reflectorBlackStock;
+                } else if (selectedOption === "Grey") {
+                    return reflectorGreyStock;
+                } else if (selectedOption === "White") {
+                    return reflectorWhiteStock;
+                } else if (selectedOption === "Peach") {
+                    return reflectorPeachStock;
+                } else if (selectedOption === "Tree Patterned Skully") {
+                    return reflectorTreeSkullyStock;
+                }
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const qtyMinus = document.querySelector(".qtyminus");
+            const qtyPlus = document.querySelector(".qtyplus");
+            const qtyInput = document.querySelector(".qty");
+
+            // Increase quantity (but not beyond available stock)
+            qtyPlus.addEventListener("click", function () {
+                let currentValue = parseInt(qtyInput.value) || 1;
+                let maxStock = getStockForSelectedOption();
+                if (currentValue < maxStock) {
+                    qtyInput.value = currentValue + 1;
+                } else {
+                    alert(`Max available stock is ${maxStock}`);
+                }
+            });
+
+            // Decrease quantity but not below 1
+            qtyMinus.addEventListener("click", function () {
+                let currentValue = parseInt(qtyInput.value) || 1;
+                if (currentValue > 1) {
+                    qtyInput.value = currentValue - 1;
+                }
+            });
+
+            // Prevent manual input beyond stock
+            qtyInput.addEventListener("input", function () {
+                let maxStock = getStockForSelectedOption();
+                this.value = this.value.replace(/[^0-9]/g, "");
+                if (this.value === "" || parseInt(this.value) < 1) {
+                    this.value = 1;
+                } else if (parseInt(this.value) > maxStock) {
+                    alert(`Max available stock is ${maxStock}`);
+                    this.value = maxStock;
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // ---------- 2. Toggle Button for Description (Variant) and Update Dropdown Options ----------
+        const toggleButtons = document.querySelectorAll(".togglebtn");
+        const Reflectorbtn = document.getElementById("Reflectorbtn");
+        const OGbtn = document.getElementById("OGbtn");
+        document.addEventListener("DOMContentLoaded", function () {
+            toggleButtons.forEach((button) => {
+                button.onclick = () => {
+                    let variant = button.innerHTML.trim(); // 'Reflector' or 'OG'
+                    // Update global currentVariant variable
+                    currentVariant = variant;
+                    // Toggle description divs
+                    if (variant === "OG") {
+                        document.getElementById("ogBlack").style.display = "block";
+                        document.getElementById("reflectorBlack").style.display = "none";
+                        activeLine = document.getElementById('Grey');
+                        activeLine.classList.add('onLine');
+                        activeLine.classList.remove('offLine');
+                        downLine = document.getElementById('Black');
+                        downLine.classList.add('offLine');
+                        downLine.classList.remove('onLine');
+                    } else {
+                        document.getElementById("reflectorBlack").style.display = "block";
+                        document.getElementById("ogBlack").style.display = "none";
+                        activeLine = document.getElementById('Black');
+                        activeLine.classList.add('onLine');
+                        activeLine.classList.remove('offLine');
+                        downLine = document.getElementById('Grey');
+                        downLine.classList.add('offLine');
+                        downLine.classList.remove('onLine');
+                    }
+                    // Update toggle button classes so that the clicked one gets class "on"
+                    toggleButtons.forEach((btn) => {
+                        if (btn === button) {
+                            btn.classList.add("on");
+                            btn.classList.remove("off");
+                        } else {
+                            btn.classList.add("off");
+                            btn.classList.remove("on");
+                        }
+                    });
+                    // Update product name based on the variant
+                    product_name.innerHTML = variant === "OG" ? "OG SKULL CAP" : "REFLECTOR SKULL CAP";
+
+                    // Update the select dropdown options based on the variant.
+                    const selectElem = document.getElementById("size");
+                    if (variant === "Reflector") {
+                        selectElem.innerHTML = `
+                        <option class="option" value="Black">Black</option>
+                        <option class="option" value="Grey">Grey</option>
+                        <option class="option" value="White">White</option>
+                        <option class="option" value="Peach">Peach</option>
+                        <option class="option" value="Tree Patterned Skully">Tree Patterned Skully</option>
+                    `;
+                    } else {
+                        selectElem.innerHTML = `
+                        <option class="option" value="Black">Black</option>
+                        <option class="option" value="Grey">Grey</option>
+                    `;
+                    }
+                    // Explicitly set the default selected value to "Black" so that the change event fires correctly.
+                    selectElem.value = "Black";
+                    // Trigger change event to update the image based on the new options
+                    selectElem.dispatchEvent(new Event("change"));
+                    updateStockView();
+                };
+            });
+        });
+    </script>
+
+    <script>
+        // ---------- 3. Update Stock View ----------
+        function updateStockView() {
+            let selectedOption = document.getElementById("size").value.trim();
+            let descriptionVariant = document.querySelector(".togglebtn.on").innerHTML.trim();
+            if (descriptionVariant === "OG") {
+                if ((selectedOption === "Black" && ogBlackStock === 0) || (selectedOption === "Grey" && ogGreyStock === 0)) {
+                    productCount.style.display = "none";
+                    soldOut.style.display = "block";
+                } else {
+                    productCount.style.display = "block";
+                    soldOut.style.display = "none";
+                }
+            } else {
+                if (
+                    ((selectedOption === "Black" || selectedOption === "Grey" || selectedOption === "White") && getStockForSelectedOption() === 0) ||
+                    ((selectedOption === "Peach" || selectedOption === "Tree Patterned Skully") && getStockForSelectedOption() === 0)
+                ) {
+                    productCount.style.display = "none";
+                    soldOut.style.display = "block";
+                } else {
+                    productCount.style.display = "block";
+                    soldOut.style.display = "none";
+                }
+            }
+        }
+    </script>
+
+    <script>
+        // ---------- 4. Dropdown (Color) Change – Toggle Product Image ----------
+        document.getElementById("size").addEventListener("change", function () {
+            let selectedColor = this.value;
+            // Hide all images for Black and Grey (both sets) and for other colors
+            document.getElementById("blackcoverOG").style.display = "none";
+            document.getElementById("blackcoverReflector").style.display = "none";
+            document.getElementById("greycoverOG").style.display = "none";
+            document.getElementById("greycoverReflector").style.display = "none";
+            document.getElementById("peachcover").style.display = "none";
+            document.getElementById("treecover").style.display = "none";
+            document.getElementById("whitecover").style.display = "none";
+
+            // Use the global currentVariant variable instead of reading product_name.innerText
+            if (selectedColor === "Black") {
+                if (currentVariant === "Reflector") {
+                    document.getElementById("blackcoverReflector").style.display = "block";
+                } else {
+                    document.getElementById("blackcoverOG").style.display = "block";
+                }
+            } else if (selectedColor === "Grey") {
+                if (currentVariant === "Reflector") {
+                    document.getElementById("greycoverReflector").style.display = "block";
+                } else {
+                    document.getElementById("greycoverOG").style.display = "block";
+                }
+            } else if (selectedColor === "White") {
+                document.getElementById("whitecover").style.display = "block";
+            } else if (selectedColor === "Peach") {
+                document.getElementById("peachcover").style.display = "block";
+            } else if (selectedColor === "Tree Patterned Skully") {
+                document.getElementById("treecover").style.display = "block";
+            }
+            updateStockView();
+        });
+    </script>
+
+    <script>
+        // ---------- 5. Cart Slide-in, Display, & Remove from Cart ----------
+        const cart = document.getElementById("cart");
+        const cartBtn = document.getElementById("cart-btn");
+        const overlay = document.getElementById("overlay");
+        const navbar = document.getElementById("navbarbar");
+        var closeCart = document.getElementById("close-cart-button");
+
+        closeCart.onclick = () => {
+            cart.classList.remove("active");
+            overlay.style.display = "none";
+            document.body.style.overflowY = "scroll";
+            navbar.style.display = "flex";
+        };
+
+        cartBtn.addEventListener("click", () => {
+            cart.classList.add("active");
+            overlay.style.display = "block";
+            document.body.style.overflowY = "hidden";
+            navbar.style.display = "none";
+        });
+
+        overlay.addEventListener("click", () => {
+            cart.classList.remove("active");
+            overlay.style.display = "none";
+            document.body.style.overflowY = "scroll";
+            navbar.style.display = "flex";
+        });
+
+        function formatPrice(price) {
+            return "GHS" + price.toFixed(2);
+        }
+
+        function displayCartItems() {
+            let cartBox = document.getElementById("cartBox");
+            cartBox.innerHTML = "";
+            let totalPrice = 0;
+            let cart = JSON.parse(localStorage.getItem("Nomaskcart")) || [];
+            document.getElementById("checkout_items").innerText = cart.length;
+            if (cart.length > 0) {
+                cart.forEach((item) => {
+                    let cartItemDiv = `
+          <div class="cart-item" style="padding: 10px; margin: 10px; display: flex; align-items: center; position: relative;">
+            <img src="${item.image_url}" alt="Product Image" width="100" style="border-radius: 8px; margin-right: 15px;">
+            <div style="flex: 1;">
+              <div style="display: flex; gap:5px;">
+                <p style="margin: 0; font-weight: bold; font-size: 14px;">${item.product_name}</p>
+                <p style="margin: 0; font-size: 14px;"> x${item.quantity}</p>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <p style="margin: 0; font-size: 14px;">${item.selectedSize}</p>
+                <p style="margin: 0; font-size: 14px;"> GHS ${item.price}</p>
+              </div>
             </div>
-            <div class="social-icons" style="margin: 20px;">
-                <a href="https://www.instagram.com/nomask.clo/" target="_blank"><svg width="35px" height="35px"
-                        viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint0_radial_87_7153)"></rect>
-                            <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint1_radial_87_7153)"></rect>
-                            <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint2_radial_87_7153)"></rect>
-                            <path
-                                d="M23 10.5C23 11.3284 22.3284 12 21.5 12C20.6716 12 20 11.3284 20 10.5C20 9.67157 20.6716 9 21.5 9C22.3284 9 23 9.67157 23 10.5Z"
-                                fill="white"></path>
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M16 21C18.7614 21 21 18.7614 21 16C21 13.2386 18.7614 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21ZM16 19C17.6569 19 19 17.6569 19 16C19 14.3431 17.6569 13 16 13C14.3431 13 13 14.3431 13 16C13 17.6569 14.3431 19 16 19Z"
-                                fill="white"></path>
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M6 15.6C6 12.2397 6 10.5595 6.65396 9.27606C7.2292 8.14708 8.14708 7.2292 9.27606 6.65396C10.5595 6 12.2397 6 15.6 6H16.4C19.7603 6 21.4405 6 22.7239 6.65396C23.8529 7.2292 24.7708 8.14708 25.346 9.27606C26 10.5595 26 12.2397 26 15.6V16.4C26 19.7603 26 21.4405 25.346 22.7239C24.7708 23.8529 23.8529 24.7708 22.7239 25.346C21.4405 26 19.7603 26 16.4 26H15.6C12.2397 26 10.5595 26 9.27606 25.346C8.14708 24.7708 7.2292 23.8529 6.65396 22.7239C6 21.4405 6 19.7603 6 16.4V15.6ZM15.6 8H16.4C18.1132 8 19.2777 8.00156 20.1779 8.0751C21.0548 8.14674 21.5032 8.27659 21.816 8.43597C22.5686 8.81947 23.1805 9.43139 23.564 10.184C23.7234 10.4968 23.8533 10.9452 23.9249 11.8221C23.9984 12.7223 24 13.8868 24 15.6V16.4C24 18.1132 23.9984 19.2777 23.9249 20.1779C23.8533 21.0548 23.7234 21.5032 23.564 21.816C23.1805 22.5686 22.5686 23.1805 21.816 23.564C21.5032 23.7234 21.0548 23.8533 20.1779 23.9249C19.2777 23.9984 18.1132 24 16.4 24H15.6C13.8868 24 12.7223 23.9984 11.8221 23.9249C10.9452 23.8533 10.4968 23.7234 10.184 23.564C9.43139 23.1805 8.81947 22.5686 8.43597 21.816C8.27659 21.5032 8.14674 21.0548 8.0751 20.1779C8.00156 19.2777 8 18.1132 8 16.4V15.6C8 13.8868 8.00156 12.7223 8.0751 11.8221C8.14674 10.9452 8.27659 10.4968 8.43597 10.184C8.81947 9.43139 9.43139 8.81947 10.184 8.43597C10.4968 8.27659 10.9452 8.14674 11.8221 8.0751C12.7223 8.00156 13.8868 8 15.6 8Z"
-                                fill="white"></path>
-                            <defs>
-                                <radialGradient id="paint0_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
-                                    gradientTransform="translate(12 23) rotate(-55.3758) scale(25.5196)">
-                                    <stop stop-color="#B13589"></stop>
-                                    <stop offset="0.79309" stop-color="#C62F94"></stop>
-                                    <stop offset="1" stop-color="#8A3AC8"></stop>
-                                </radialGradient>
-                                <radialGradient id="paint1_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
-                                    gradientTransform="translate(11 31) rotate(-65.1363) scale(22.5942)">
-                                    <stop stop-color="#E0E8B7"></stop>
-                                    <stop offset="0.444662" stop-color="#FB8A2E"></stop>
-                                    <stop offset="0.71474" stop-color="#E2425C"></stop>
-                                    <stop offset="1" stop-color="#E2425C" stop-opacity="0"></stop>
-                                </radialGradient>
-                                <radialGradient id="paint2_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
-                                    gradientTransform="translate(0.500002 3) rotate(-8.1301) scale(38.8909 8.31836)">
-                                    <stop offset="0.156701" stop-color="#406ADC"></stop>
-                                    <stop offset="0.467799" stop-color="#6A45BE"></stop>
-                                    <stop offset="1" stop-color="#6A45BE" stop-opacity="0"></stop>
-                                </radialGradient>
-                            </defs>
-                        </g>
-                    </svg></a>
-            </div>
-            <div>
-                &copy; NoMask.
-            </div>
-        </footer>
+            <button class="close-button" onclick="removeFromCart('${item.product_id_date}')" style="position: absolute; top: 10px; right: 10px; background: transparent; border: none; cursor: pointer; font-size: 16px; color: #FF5722;">&times;</button>
+          </div>
+        `;
+                    cartBox.innerHTML += cartItemDiv;
+                    totalPrice += item.price;
+                });
+                cartBox.innerHTML += `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-left: 20px;" id="total-price-div">
+          <div>Total:</div>
+          <div class="total-price" id="total-price" style="color: #28a745; font-weight: bold; margin-right: 20px;">${formatPrice(totalPrice)}</div>
+        </div>
+        <div style="text-align: center; margin: 20px;">
+          <a href="{% url 'checkout' %}">
+            <button style="padding: 10px 20px; width:100%; background-color: #228B22; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Checkout
+            </button>
+          </a>
+        </div>
+        <div style="width:100%; height:150px"></div>
+      `;
+            } else {
+                cartBox.innerHTML = '<div class="empty-cart" style="display: flex; justify-content: center;">Nothing in Cart</div>';
+            }
+        }
+
+        function removeFromCart(productId) {
+            let cart = JSON.parse(localStorage.getItem("Nomaskcart")) || [];
+            cart = cart.filter((item) => item.product_id_date !== productId);
+            localStorage.setItem("Nomaskcart", JSON.stringify(cart));
+            displayCartItems();
+        }
+
+        window.onload = displayCartItems;
+    </script>
+
+    <script>
+        // ---------- 6. Add to Cart Function ----------
+        const addToCartDiv = document.getElementById("addToCartDiv");
+        addToCartDiv.onclick = () => {
+            const product_id_date = `${document.getElementById("product_id").value}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+            const quantity = Number(document.getElementById("quantity_value").value);
+            const product_price = document.getElementById("product_price");
+            const selectElement = document.getElementById("size");
+            let selectedSize = selectElement.value.trim();
+            let productName = document.getElementById("product_name").innerText;
+            let maxStock = getStockForSelectedOption();
+            if (quantity > maxStock) {
+                alert(`Cannot add to cart. Max available stock is ${maxStock}`);
+                return;
+            }
+            let image_url;
+            if (selectedSize === "Black") {
+                if (productName.includes("Reflector")) {
+                    image_url = document.getElementById("blackcoverReflector").src;
+                } else {
+                    image_url = document.getElementById("blackcoverOG").src;
+                }
+            } else if (selectedSize === "Grey") {
+                if (productName.includes("Reflector")) {
+                    image_url = document.getElementById("greycoverReflector").src;
+                } else {
+                    image_url = document.getElementById("greycoverOG").src;
+                }
+            } else if (selectedSize === "White") {
+                image_url = document.getElementById("whitecover").src;
+            } else if (selectedSize === "Peach") {
+                image_url = document.getElementById("peachcover").src;
+            } else if (selectedSize === "Tree Patterned Skully") {
+                image_url = document.getElementById("treecover").src;
+            }
+            if (!selectedSize) {
+                return alert("No size selected");
+            }
+            if (selectedSize.trim() === "None") {
+                selectedSize = "";
+            }
+            const price = Number(quantity) * Number(product_price.dataset.price);
+            const newItem = {
+                product_id_date,
+                product_id: document.getElementById("product_id").value.trim(),
+                product_name: productName,
+                quantity,
+                image_url,
+                selectedSize,
+                price,
+            };
+            let cart = JSON.parse(localStorage.getItem("Nomaskcart")) || [];
+            const existingIndex = cart.findIndex(
+                (item) => item.product_id === newItem.product_id && item.selectedSize === newItem.selectedSize
+            );
+            if (existingIndex !== -1) {
+                cart[existingIndex] = newItem;
+                alert("Updated product in cart");
+            } else {
+                cart.push(newItem);
+                alert("Item added to cart");
+            }
+            localStorage.setItem("Nomaskcart", JSON.stringify(cart));
+            displayCartItems();
+        };
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Attach event listener to the popup close button
+        const popupCloseBtn = document.getElementById("popup-close");
+        if (popupCloseBtn) {
+            popupCloseBtn.addEventListener("click", function () {
+                document.getElementById("popup").style.display = "none";
+            });
+        }
+    </script>
 </body>
 
 </html>
