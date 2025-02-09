@@ -343,21 +343,24 @@
             justify-content: space-around;
             width: 100%;
         }
-.togglerCover {
-    top: 50px;
-    left: 50%;              /* Added to position the element at 50% from the left */
-    transform: translateX(-50%);  /* Added to shift the element left by half its width */
-    background-color: #000;
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-    align-items: center;
-    position: fixed;
-    z-index: 20;
-    margin: auto;
-}
+
+        .togglerCover {
+            top: 50px;
+            left: 50%;
+            /* Centers the element horizontally */
+            transform: translateX(-50%);
+            /* Shifts the element left by half its width */
+            background-color: #000;
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+            position: fixed;
+            z-index: 20;
+            margin: auto;
+        }
 
         .lines {
             display: flex;
@@ -365,9 +368,9 @@
             width: 100%;
             gap: 10px;
             margin-bottom: 4px;
-
         }
-        .lines span{
+
+        .lines span {
             width: 40%;
         }
 
@@ -476,30 +479,28 @@
                 width: 100%;
             }
         }
-.image-wrapper {
-    position: relative;
-    display: inline-block;
-}
 
-.image-wrapper::before {
-    content: '';
-    position: absolute;
-    
-    right: 0;
-  
-    left:0 ;
-    background-image: url(" {% static 'home/store/logo_white.png' %} ");
-    background-size: 120% 120%;
-    background-position: center;
-    z-index: -1;
-  
-}
+        .image-wrapper {
+            position: relative;
+            display: inline-block;
+        }
 
-.imageCover {
-    max-height: 450px;
-    width: auto !important;
-    position: relative;
-}
+        .image-wrapper::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            left: 0;
+            background-image: url(" {% static 'home/store/logo_white.png' %} ");
+            background-size: 120% 120%;
+            background-position: center;
+            z-index: -1;
+        }
+
+        .imageCover {
+            max-height: 450px;
+            width: auto !important;
+            position: relative;
+        }
     </style>
 </head>
 
@@ -567,9 +568,10 @@
     <div class="pd-wrap">
         <div class="container">
             <!-- Toggle Buttons & Lines -->
-            <div class="togglerCover" >
+            <div class="togglerCover">
                 <div class="black-grey-to" style="color: white;">
                     <!-- These buttons control the variant (description) -->
+                    <!-- Note: We now use a global variable currentVariant -->
                     <span id="Reflectorbtn" data-id="Black" class="on togglebtn">Reflector</span>
                     <span id="OGbtn" data-id="Grey" class="off togglebtn">OG</span>
                 </div>
@@ -581,19 +583,20 @@
             <div class="row" style="margin-top: 100px;">
                 <div class="col-md-6">
                     <div id="slider">
-                                {% if nomaskReflector.discount_price != 0 %}
-                                <span
-                                    style="background-color: #c03d3d; color: white; font-weight: bold; padding: 5px 10px; border-radius: 5px; font-size: 14px; position: relative; top: -5px; left: 447px;">
-                                    -{{ nomaskReflector.discount_percentage }}% off
-                                </span>
-                                {% endif %}
-                        <div class="item" style="position: relative; display: flex; justify-content: center;align-self: fle;">
-                   
+                        {% if nomaskReflector.discount_price != 0 %}
+                        <span
+                            style="background-color: #c03d3d; color: white; font-weight: bold; padding: 5px 10px; border-radius: 5px; font-size: 14px; position: relative; top: -5px; left: 447px;">
+                            -{{ nomaskReflector.discount_percentage }}% off
+                        </span>
+                        {% endif %}
+                        <div class="item"
+                            style="position: relative; display: flex; justify-content: center; align-self: fle;">
                             <!-- For Black images: two sets (OG and Reflector) -->
-                          <div class="image-wrapper">
-                            <img src="{% static 'home/store/og_black.jpg' %}" id="blackcoverOG"
-                                style="width: 100%; display: {% if not nomaskReflector %}block{% else %}none{% endif %};" class="imageCover" />
-                          </div>
+                            <div class="image-wrapper">
+                                <img src="{% static 'home/store/og_black.jpg' %}" id="blackcoverOG"
+                                    style="width: 100%; display: {% if not nomaskReflector %}block{% else %}none{% endif %};"
+                                    class="imageCover" />
+                            </div>
                             <img src="{% static 'home/store/reflector_black.jpg' %}" id="blackcoverReflector"
                                 style="width: 100%; display: {% if nomaskReflector %}block{% else %}none{% endif %};"
                                 class="imageCover" />
@@ -754,6 +757,10 @@
 </body>
 <!-- Scripts -->
 <script>
+    // Global variable to track current variant
+    let currentVariant = "OG";
+</script>
+<script>
     // ---------- Stock variables ----------
     const ogBlackStock = Number('{{ productStock.ogBlack }}');
     const ogGreyStock = Number('{{ productStock.ogGrey }}');
@@ -838,6 +845,8 @@
         toggleButtons.forEach((button) => {
             button.onclick = () => {
                 let variant = button.innerHTML.trim(); // 'Reflector' or 'OG'
+                // Update global currentVariant variable
+                currentVariant = variant;
                 // Toggle description divs
                 if (variant === "OG") {
                     document.getElementById("ogBlack").style.display = "block";
@@ -887,6 +896,8 @@
                         <option class="option" value="Grey">Grey</option>
                     `;
                 }
+                // Explicitly set the default selected value to "Black" so that the change event fires correctly.
+                selectElem.value = "Black";
                 // Trigger change event to update the image based on the new options
                 selectElem.dispatchEvent(new Event("change"));
                 updateStockView();
@@ -936,15 +947,15 @@
         document.getElementById("treecover").style.display = "none";
         document.getElementById("whitecover").style.display = "none";
 
-        let variant = document.getElementById("product_name").innerText;
+        // Use the global currentVariant variable instead of reading product_name.innerText
         if (selectedColor === "Black") {
-            if (variant.includes("Reflector")) {
+            if (currentVariant === "Reflector") {
                 document.getElementById("blackcoverReflector").style.display = "block";
             } else {
                 document.getElementById("blackcoverOG").style.display = "block";
             }
         } else if (selectedColor === "Grey") {
-            if (variant.includes("Reflector")) {
+            if (currentVariant === "Reflector") {
                 document.getElementById("greycoverReflector").style.display = "block";
             } else {
                 document.getElementById("greycoverOG").style.display = "block";

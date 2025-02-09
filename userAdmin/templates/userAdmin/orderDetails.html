@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="Checkout Page" />
     <meta name="author" content="" />
-    <title>Checkout - Responsive Design</title>
+    <title>NoMask</title>
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="{% static 'assets/img/logo.jpg' %}" />
@@ -223,33 +223,33 @@
 
                         {% if 'Reflector' in item.product.name %}
                         {% if item.size == "Black" %}
-                        <img src="{% static 'home/store/black.jpg' %}" alt="{{ item.product.name }}"
+                        <img src="{% static 'userAdmin/store/reflector_black.jpg' %}" alt="{{ item.product.name }}"
                             style="width: 100px; height: 100px; border-radius:10px;">
                         {% elif item.size == "Grey" %}
-                        <img src="{% static 'home/store/grey_new.jpg' %}" alt="{{ item.product.name }}"
+                        <img src="{% static 'userAdmin/store/reflector_grey.jpg' %}" alt="{{ item.product.name }}"
                             style="width: 100px; height: 100px; border-radius:10px;">
                         {% elif item.size == "White" %}
-                        <img src="{% static 'home/store/white.jpg' %}" alt="{{ item.product.name }}"
+                        <img src="{% static 'userAdmin/product/white.jpg' %}" alt="{{ item.product.name }}"
                             style="width: 100px; height: 100px; border-radius:10px;">
                         {% elif item.size == "Peach" %}
-                        <img src="{% static 'home/product/peach.jpg' %}" alt="{{ item.product.name }}"
+                        <img src="{% static 'userAdmin/product/peach.jpg' %}" alt="{{ item.product.name }}"
                             style="width: 100px; height: 100px; border-radius:10px;">
                         {% elif item.size == "Tree Patterned Skully" %}
-                        <img src="{% static 'home/product/tree_patterned_skully.jpg' %}" alt="{{ item.product.name }}"
+                        <img src="{% static 'userAdmin/product/tree_patterned_skully.jpg' %}" alt="{{ item.product.name }}"
                             style="width: 100px; height: 100px; border-radius:10px;">
                         {% else %}
-                        <img src="{% static 'home/store/grey_new.jpg' %}" alt="{{ item.product.name }}"
+                        <img src="{% static 'userAdmin/store/grey_new.jpg' %}" alt="{{ item.product.name }}"
                             style="width: 100px; height: 100px; border-radius:10px;">
                         {% endif %}
                         {% else %}
                         {% if item.size == "Black" %}
-                        <img src="{% static 'home/store/black.jpg' %}" alt="{{ item.product.name }}"
+                        <img src="{% static 'userAdmin/store/og_black.jpg' %}" alt="{{ item.product.name }}"
                             style="width: 100px; height: 100px; border-radius:10px;">
                         {% elif item.size == "Grey" %}
-                        <img src="{% static 'home/store/grey_new.jpg' %}" alt="{{ item.product.name }}"
+                        <img src="{% static 'userAdmin/store/og_grey.jpg' %}" alt="{{ item.product.name }}"
                             style="width: 100px; height: 100px; border-radius:10px;">
                         {% else %}
-                        <img src="{% static 'home/store/grey_new.jpg' %}" alt="{{ item.product.name }}"
+                        <img src="{% static 'userAdmin/store/grey_new.jpg' %}" alt="{{ item.product.name }}"
                             style="width: 100px; height: 100px; border-radius:10px;">
                         {% endif %}
                         {% endif %}

@@ -200,7 +200,9 @@
         function payWithPayStack() {
             const paystack = new PaystackPop();
             paystack.newTransaction({
-                key: "pk_test_b861b5ffacd3f3a4039ef8952f4a13b9cdff9c2a",
+                key: "pk_live_bb2e84705148a6813e8df5c876019942c67fdcd3",
+                
+                // pk_test_b861b5ffacd3f3a4039ef8952f4a13b9cdff9c2a
                 email: "{{ payment.email }}",
                 amount: `${total}`,
                 onSuccess: (transaction) => {

@@ -698,7 +698,7 @@
     // and selectedSize (the color chosen). We now do a case-insensitive check.
     function getStockForItem(item) {
         // Determine variant from product_name
-        let variant = item.product_name.includes('Reflector') ? 'Reflector' : 'OG';
+        let variant = item.product_name.includes('REFLECTOR') ? 'REFLECTOR' : 'OG';
         // Convert the selected color to lowercase for comparison
         let color = item.selectedSize.trim().toLowerCase();
 
@@ -710,7 +710,7 @@
             } else {
                 return 0;
             }
-        } else if (variant === 'Reflector') {
+        } else if (variant === 'REFLECTOR') {
             if (color === 'black') {
                 return reflectorBlackStock;
             } else if (color === 'grey') {
@@ -733,9 +733,9 @@
     function validateCartStock() {
         let cart = JSON.parse(localStorage.getItem('Nomaskcart')) || [];
         let cartUpdated = false;
-
         // Use filter to remove out-of-stock items and update quantities if needed.
         let updatedCart = cart.filter(item => {
+
             let maxStock = getStockForItem(item);
             if (maxStock === 0) {
                 alert(`Item ${item.product_name} (${item.selectedSize}) is out of stock and has been removed from your cart.`);
