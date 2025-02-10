@@ -237,7 +237,7 @@ class ContactRequests(View):
         
         contactData = ContactData.objects.all()
         context ={
-            contactData: ContactData,
+            'contactData': contactData,
         }
         return render(request,'userAdmin/contactRequests.html',context)
     
