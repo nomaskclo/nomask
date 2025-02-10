@@ -3,7 +3,7 @@ import string
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
-from home.models import AccessRequest, ProductStock, Payment, DeliveryPriceByRegion, Product
+from home.models import AccessRequest, ProductStock, ContactData,Payment, DeliveryPriceByRegion, Product
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login
@@ -230,4 +230,14 @@ class OrdersDetailsPage(View):
 class ContactRequests(View):
     
     def get(self,request):
-        return render(request,'userAdmin/contactRequests.html')
+        if request.user.is_authenticated and request.user.is_superuser:
+            pass  # Allow access
+        else:
+            return redirect('/')
+        
+        contactData = ContactData.objects.all()
+        context ={
+            contactData: ContactData,
+        }
+        return render(request,'userAdmin/contactRequests.html',context)
+    

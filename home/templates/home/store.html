@@ -671,7 +671,8 @@
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="description" role="tabpanel"
                                     aria-labelledby="description-tab">
-                                    <!-- Two description divs – only one is shown based on the toggle -->
+                                    <!-- Two description divs – one for OG and one for Reflector.
+                                         Their innerText will be updated dynamically based on variant and colorway. -->
                                     <div id="ogBlack" style="color: white;">
                                         this is the OG description
                                     </div>
@@ -901,6 +902,7 @@
                 // Trigger change event to update the image based on the new options
                 selectElem.dispatchEvent(new Event("change"));
                 updateStockView();
+                updateDescription(); // Call updateDescription() on toggle
             };
         });
     });
@@ -935,7 +937,7 @@
 </script>
 
 <script>
-    // ---------- 4. Dropdown (Color) Change – Toggle Product Image ----------
+    // ---------- 4. Dropdown (Color) Change – Toggle Product Image and Update Description ----------
     document.getElementById("size").addEventListener("change", function () {
         let selectedColor = this.value;
         // Hide all images for Black and Grey (both sets) and for other colors
@@ -946,7 +948,7 @@
         document.getElementById("peachcover").style.display = "none";
         document.getElementById("treecover").style.display = "none";
         document.getElementById("whitecover").style.display = "none";
-       
+
         // Use the global currentVariant variable instead of reading product_name.innerText
         if (selectedColor === "Black") {
             if (currentVariant === "Reflector") {
@@ -968,6 +970,7 @@
             document.getElementById("treecover").style.display = "block";
         }
         updateStockView();
+        updateDescription(); // Call updateDescription() on dropdown change
     });
 </script>
 
@@ -1125,6 +1128,45 @@
         localStorage.setItem("Nomaskcart", JSON.stringify(cart));
         displayCartItems();
     };
+</script>
+
+<!-- New Script: Update the Description based on Variant and Colorway -->
+<script>
+    function updateDescription() {
+        let variant = currentVariant; // "Reflector" or "OG"
+        let selectedColor = document.getElementById("size").value.trim();
+        if (variant === "Reflector") {
+            const reflectorDescriptions = {
+                "Black": "Dark mode activated… until the light finds you.",
+                "Grey": "Sleek, stealthy, and shines when the world isn’t watching.",
+                "White": "Pure by day, untamed by night—watch it transform.",
+                "Peach": "Glow subtle, move loud—peachy smooth with a rebellious twist.",
+                "Tree Patterned Skully": "Rooted in style, but glows like it’s got a wild side"
+            };
+            document.getElementById("reflectorBlack").innerText = reflectorDescriptions[selectedColor] || "";
+        } else { // OG variant
+            const ogDescriptions = {
+                "Black": "Timeless, effortless, and always in control—black never misses.",
+                "Grey": "Cool, collected, and built for any vibe—grey keeps it steady."
+            };
+            document.getElementById("ogBlack").innerText = ogDescriptions[selectedColor] || "";
+        }
+    }
+</script>
+
+<!-- Ensure initial state is set correctly on page load -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Since default variant is Reflector, hide the OG description div and show the Reflector one.
+        if (currentVariant === "Reflector") {
+            document.getElementById("ogBlack").style.display = "none";
+            document.getElementById("reflectorBlack").style.display = "block";
+        } else {
+            document.getElementById("ogBlack").style.display = "block";
+            document.getElementById("reflectorBlack").style.display = "none";
+        }
+        updateDescription();
+    });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
