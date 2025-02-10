@@ -585,6 +585,9 @@
                 -{{ nomaskReflector.discount_percentage }}% off
             </span>
             {% endif %}
+            <div id="spacing" style="margin-top: 100px; display: none;color: #000;" >
+                .
+            </div>
             <div class="row" style="margin-top: 20px;">
                 <div class="col-md-6">
                     <div id="slider">
@@ -886,6 +889,7 @@
                 // Update the select dropdown options based on the variant.
                 const selectElem = document.getElementById("size");
                 if (variant === "Reflector") {
+                    document.getElementById('spacing').style.display = 'none';
                     selectElem.innerHTML = `
                         <option class="option" value="Black">Black</option>
                         <option class="option" value="Grey">Grey</option>
@@ -894,6 +898,7 @@
                         <option class="option" value="Tree Patterned Skully">Tree Patterned Skully</option>
                     `;
                 } else {
+                    document.getElementById('spacing').style.display = 'block'
                     selectElem.innerHTML = `
                         <option class="option" value="Black">Black</option>
                         <option class="option" value="Grey">Grey</option>
@@ -1079,14 +1084,15 @@
             return;
         }
         let image_url;
+        // Use the global currentVariant variable to determine which image to use:
         if (selectedSize === "Black") {
-            if (productName.includes("Reflector")) {
+            if (currentVariant === "Reflector") {
                 image_url = document.getElementById("blackcoverReflector").src;
             } else {
                 image_url = document.getElementById("blackcoverOG").src;
             }
         } else if (selectedSize === "Grey") {
-            if (productName.includes("Reflector")) {
+            if (currentVariant === "Reflector") {
                 image_url = document.getElementById("greycoverReflector").src;
             } else {
                 image_url = document.getElementById("greycoverOG").src;
