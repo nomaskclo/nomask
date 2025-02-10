@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" />
     <link rel="stylesheet" type="text/css"
@@ -16,6 +15,7 @@
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
     <style>
+        /* Your existing CSS styles remain unchanged */
         .pd-wrap {
             padding: 40px 0;
             font-family: "Poppins", sans-serif;
@@ -347,9 +347,7 @@
         .togglerCover {
             top: 50px;
             left: 50%;
-            /* Centers the element horizontally */
             transform: translateX(-50%);
-            /* Shifts the element left by half its width */
             background-color: #000;
             width: 70%;
             display: flex;
@@ -519,7 +517,8 @@
 
             <!-- Cart Button on the right -->
             <div id="cart-btn" style="position: absolute; right: 20px;">
-                <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
@@ -584,11 +583,12 @@
                 <div class="col-md-6">
                     <div id="slider">
                         {% if nomaskReflector.discount_price != 0 %}
-                        <span
+                        <span id="discountPercentageBox"
                             style="background-color: #c03d3d; color: white; font-weight: bold; padding: 5px 10px; border-radius: 5px; font-size: 14px; position: relative; top: -5px; left: 447px;">
                             -{{ nomaskReflector.discount_percentage }}% off
                         </span>
                         {% endif %}
+
                         <div class="item"
                             style="position: relative; display: flex; justify-content: center; align-self: fle;">
                             <!-- For Black images: two sets (OG and Reflector) -->
@@ -623,16 +623,18 @@
                                 {% if nomaskReflector %}REFLECTOR SKULL CAP{% else %}OG SKULL CAP{% endif %}
                             </div>
                             <div>
-                                {% if nomaskReflector.discount_price != 0 %}
-                                <div class="product-price-discount"
-                                    style="text-decoration: line-through; color: #c03d3d;">
-                                    GHS{{ nomaskReflector.discount_price }}
-                                </div>
-                                {% endif %}
-                                <div class="product-price-discount" style="color: white;" id="product_price"
-                                    data-price="{% if nomaskReflector %}{{ nomaskReflector.price }}{% else %}{{ nomaskOG.price }}{% endif %}">
-                                    GHS{% if nomaskReflector %}{{ nomaskReflector.price }}{% else %}{{ nomaskOG.price
-                                    }}{% endif %}
+                                <!-- Updated Price Display: both actual price and discount price side-by-side -->
+                                                        <!-- New discount price container -->
+                                                        <div id="discountPrice" class="product-price-discount"
+                                                            style="text-decoration: line-through; color: #c03d3d; display: none;">
+                                                        </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="product-price-discount" style="color: white;" id="product_price"
+                                        data-price="{% if nomaskReflector %}{{ nomaskReflector.price }}{% else %}{{ nomaskOG.price }}{% endif %}">
+                                        GHS{% if nomaskReflector %}{{ nomaskReflector.price }}{% else %}{{ nomaskOG.price }}{% endif %}
+                                    </div>
+                                    <div id="discountPrice" class="product-price-discount ms-2"
+                                        style="text-decoration: line-through; color: #c03d3d; display: none;"></div>
                                 </div>
                             </div>
                         </div>
@@ -643,7 +645,6 @@
                                         Options Available – change color and variant.
                                     </div>
                                 </div>
-                                <!-- Label remains "Pieces" -->
                                 <label for="size" style="color: white;">COLORWAYS</label>
                                 <select id="size" name="size" class="form-control">
                                     {% if nomaskReflector %}
@@ -708,7 +709,8 @@
         </div>
         <div class="social-icons" style="margin: 20px;">
             <a href="https://www.instagram.com/nomask.clo/" target="_blank">
-                <svg width="35px" height="35px" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="35px" height="35px" viewBox="0 0 32 32" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
@@ -880,7 +882,6 @@
                 });
                 // Update product name based on the variant
                 product_name.innerHTML = variant === "OG" ? "OG SKULL CAP" : "REFLECTOR SKULL CAP";
-
                 // Update the select dropdown options based on the variant.
                 const selectElem = document.getElementById("size");
                 if (variant === "Reflector") {
@@ -897,12 +898,11 @@
                         <option class="option" value="Grey">Grey</option>
                     `;
                 }
-                // Explicitly set the default selected value to "Black" so that the change event fires correctly.
                 selectElem.value = "Black";
-                // Trigger change event to update the image based on the new options
                 selectElem.dispatchEvent(new Event("change"));
                 updateStockView();
-                updateDescription(); // Call updateDescription() on toggle
+                updateDescription(); // Update description on toggle
+                updatePricing();     // Update pricing on toggle
             };
         });
     });
@@ -937,10 +937,9 @@
 </script>
 
 <script>
-    // ---------- 4. Dropdown (Color) Change – Toggle Product Image and Update Description ----------
+    // ---------- 4. Dropdown (Color) Change – Toggle Product Image and Update Description/Pricing ----------
     document.getElementById("size").addEventListener("change", function () {
         let selectedColor = this.value;
-        // Hide all images for Black and Grey (both sets) and for other colors
         document.getElementById("blackcoverOG").style.display = "none";
         document.getElementById("blackcoverReflector").style.display = "none";
         document.getElementById("greycoverOG").style.display = "none";
@@ -949,7 +948,6 @@
         document.getElementById("treecover").style.display = "none";
         document.getElementById("whitecover").style.display = "none";
 
-        // Use the global currentVariant variable instead of reading product_name.innerText
         if (selectedColor === "Black") {
             if (currentVariant === "Reflector") {
                 document.getElementById("blackcoverReflector").style.display = "block";
@@ -970,7 +968,8 @@
             document.getElementById("treecover").style.display = "block";
         }
         updateStockView();
-        updateDescription(); // Call updateDescription() on dropdown change
+        updateDescription(); // Update description on dropdown change
+        updatePricing();     // Update pricing on dropdown change
     });
 </script>
 
@@ -1154,10 +1153,55 @@
     }
 </script>
 
+<!-- New Script: Update Pricing (Price and Discount Box) based on Variant -->
+<script>
+    // Create data objects from Django context
+    var reflectorData = {
+        price: {{ nomaskReflector.price|default:"0" }},
+        discount_price: {{ nomaskReflector.discount_price|default:"0" }},
+        discount_percentage: {{ nomaskReflector.discount_percentage|default:"0" }}
+    };
+    var ogData = {
+        price: {{ nomaskOG.price|default:"0" }},
+        discount_price: {{ nomaskOG.discount_price|default:"0" }},
+        discount_percentage: {{ nomaskOG.discount_percentage|default:"0" }}
+    };
+
+    function updatePricing() {
+        var discountBox = document.getElementById("discountPercentageBox");
+        var discountPriceDiv = document.getElementById("discountPrice");
+        var productPriceDiv = document.getElementById("product_price");
+        if (currentVariant === "Reflector") {
+            productPriceDiv.innerText = "GHS" + reflectorData.price;
+            productPriceDiv.setAttribute("data-price", reflectorData.price);
+            if (reflectorData.discount_price != 0) {
+                discountBox.style.display = "inline-block";
+                discountBox.innerText = "-" + reflectorData.discount_percentage + "% off";
+                discountPriceDiv.style.display = "block";
+                discountPriceDiv.innerText = "GHS" + reflectorData.discount_price;
+            } else {
+                discountBox.style.display = "none";
+                discountPriceDiv.style.display = "none";
+            }
+        } else {
+            productPriceDiv.innerText = "GHS" + ogData.price;
+            productPriceDiv.setAttribute("data-price", ogData.price);
+            if (ogData.discount_price != 0) {
+                discountBox.style.display = "inline-block";
+                discountBox.innerText = "-" + ogData.discount_percentage + "% off";
+                discountPriceDiv.style.display = "block";
+                discountPriceDiv.innerText = "GHS" + ogData.discount_price;
+            } else {
+                discountBox.style.display = "none";
+                discountPriceDiv.style.display = "none";
+            }
+        }
+    }
+</script>
+
 <!-- Ensure initial state is set correctly on page load -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Since default variant is Reflector, hide the OG description div and show the Reflector one.
         if (currentVariant === "Reflector") {
             document.getElementById("ogBlack").style.display = "none";
             document.getElementById("reflectorBlack").style.display = "block";
@@ -1166,9 +1210,9 @@
             document.getElementById("reflectorBlack").style.display = "none";
         }
         updateDescription();
+        updatePricing();
     });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-
 </html>
